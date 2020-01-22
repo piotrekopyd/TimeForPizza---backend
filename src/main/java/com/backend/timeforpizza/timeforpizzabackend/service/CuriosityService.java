@@ -28,7 +28,7 @@ public class CuriosityService {
         return curiosityDao.findAll();
     }
 
-    public Optional<Curiosity> getPersonById(Integer id) {
+    public Optional<Curiosity> getCuriosityById(Integer id) {
         return curiosityDao.findById(id);
     }
 
