@@ -6,9 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
 import java.util.Optional;
-import java.util.UUID;
 
 @Service
 public class CuriosityService {
@@ -37,8 +35,14 @@ public class CuriosityService {
     }
 
     public int updateCuriosity(Curiosity newCuriosity) {
-        Curiosity saved = curiosityDao.save(newCuriosity);
-        return saved != null ? 1 : - 1;
+        Curiosity oldCuriosity = curiosityDao.findById(newCuriosity.getId())
+                .orElse(null);
+        if (oldCuriosity != null) {
+            oldCuriosity.setTitle(newCuriosity.getTitle());
+            oldCuriosity.setContent(newCuriosity.getContent());
+            curiosityDao.save(oldCuriosity);
+        }
+        return oldCuriosity != null ? 1 : - 1;
     }
 
 }

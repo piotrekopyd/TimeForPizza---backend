@@ -1,8 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotBlank;
-import java.util.UUID;
 
 @Entity
 @Table(name = "Curiosity")
@@ -17,10 +15,6 @@ public class Curiosity {
 
     @Column(name = "content", nullable = false)
     private String content;
-
-    public void setId(Integer id) {
-        this.id = id;
-    }
 
     public void setTitle(String title) {
         this.title = title;

@@ -41,7 +41,7 @@ public class CuriosityController {
     }
 
     @PutMapping(path = "{id}")
-    public void updateCuriosity(@PathVariable("id") Integer id, @Valid @NotNull @RequestBody Curiosity newCuriosity) {
+    public void updateCuriosity(@Valid @NotNull @RequestBody Curiosity newCuriosity) {
         curiosityService.updateCuriosity(newCuriosity);
     }
 
