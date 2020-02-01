@@ -1,6 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
-import com.backend.timeforpizza.timeforpizzabackend.dao.CuriosityDao;
+import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,39 +10,40 @@ import java.util.Optional;
 
 @Service
 public class CuriosityService {
-    private final CuriosityDao curiosityDao;
+    private final CuriosityRepository curiosityRepository;
 
     @Autowired
-    public CuriosityService(@Qualifier("curiosityDao") CuriosityDao curiosityDao) {
-        this.curiosityDao = curiosityDao;
+    public CuriosityService(@Qualifier("curiosityRepository") CuriosityRepository curiosityRepository) {
+        this.curiosityRepository = curiosityRepository;
     }
 
     public int addCuriosity(Curiosity curiosity) {
-        Curiosity saved = curiosityDao.save(curiosity);
-        return saved != null ? 1 : - 1;
+        Curiosity addedCuriosity = curiosityRepository.save(curiosity);
+        return addedCuriosity != null ? 1 : - 1;
     }
 
     public Iterable<Curiosity> getAllCuriosities() {
-        return curiosityDao.findAll();
+        return curiosityRepository.findAll();
     }
 
     public Optional<Curiosity> getCuriosityById(Integer id) {
-        return curiosityDao.findById(id);
+        return curiosityRepository.findById(id);
     }
 
     public void deleteCuriosityById(Integer id) {
-        curiosityDao.deleteById(id);
+        curiosityRepository.deleteById(id);
     }
 
     public int updateCuriosity(Curiosity newCuriosity) {
-        Curiosity oldCuriosity = curiosityDao.findById(newCuriosity.getCuriosityId())
+        Curiosity oldCuriosity = curiosityRepository.findById(newCuriosity.getCuriosityId())
                 .orElse(null);
         if (oldCuriosity != null) {
             oldCuriosity.setTitle(newCuriosity.getTitle());
             oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
-            curiosityDao.save(oldCuriosity);
+            curiosityRepository.save(oldCuriosity);
+            return 1;
         }
-        return oldCuriosity != null ? 1 : - 1;
+        return - 1;
     }
 
 }

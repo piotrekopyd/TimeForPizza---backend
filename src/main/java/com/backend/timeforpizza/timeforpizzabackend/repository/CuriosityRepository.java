@@ -1,10 +1,9 @@
-package com.backend.timeforpizza.timeforpizzabackend.dao;
+package com.backend.timeforpizza.timeforpizzabackend.repository;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-
-@Repository("curiosityDao")
-public interface CuriosityDao extends CrudRepository<Curiosity, Integer> {
+@Repository("curiosityRepository")
+public interface CuriosityRepository extends CrudRepository<Curiosity, Integer> {
 }
