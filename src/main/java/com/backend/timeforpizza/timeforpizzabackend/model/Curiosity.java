@@ -6,44 +6,34 @@ import javax.persistence.*;
 @Table(name = "Curiosity")
 public class Curiosity {
     @Id
-    @Column(name = "id")
+    @Column(name = "curiosity_id")
     @GeneratedValue(strategy=GenerationType.AUTO)
-    private Integer id;
+    private Integer curiosityId;
 
-    @Column(name = "title")
     private String title;
 
-    @Column(name = "content", nullable = false)
-    private String content;
+    @Column(name = "curiosity", nullable = false)
+    private String curiosity;
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public void setContent(String content) {
-        this.content = content;
-    }
-
-    public Integer getId() {
-        return id;
+    public Integer getCuriosityId() {
+        return curiosityId;
     }
 
     public String getTitle() {
         return title;
     }
 
-    public String getContent() {
-        return content;
+    public void setTitle(String title) {
+        this.title = title;
     }
 
-    @Override
-    public String toString() {
-        return "Curiosity{" +
-                "id=" + id +
-                ", title='" + title + '\'' +
-                ", content='" + content + '\'' +
-                '}';
+    public String getCuriosity() {
+        return curiosity;
     }
 
-    public Curiosity(){};
+    public void setCuriosity(String curiosity) {
+        this.curiosity = curiosity;
+    }
+
+    public Curiosity(){}
 }

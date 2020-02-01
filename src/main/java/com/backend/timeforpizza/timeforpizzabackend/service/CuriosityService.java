@@ -35,11 +35,11 @@ public class CuriosityService {
     }
 
     public int updateCuriosity(Curiosity newCuriosity) {
-        Curiosity oldCuriosity = curiosityDao.findById(newCuriosity.getId())
+        Curiosity oldCuriosity = curiosityDao.findById(newCuriosity.getCuriosityId())
                 .orElse(null);
         if (oldCuriosity != null) {
             oldCuriosity.setTitle(newCuriosity.getTitle());
-            oldCuriosity.setContent(newCuriosity.getContent());
+            oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
             curiosityDao.save(oldCuriosity);
         }
         return oldCuriosity != null ? 1 : - 1;
