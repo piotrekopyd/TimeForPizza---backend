@@ -40,7 +40,7 @@ public class CuriosityController {
         curiosityService.deleteCuriosityById(id);
     }
 
-    @PutMapping(path = "{id}")
+    @PutMapping
     public void updateCuriosity(@Valid @NotNull @RequestBody Curiosity newCuriosity) {
         curiosityService.updateCuriosity(newCuriosity);
     }

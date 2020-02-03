@@ -16,13 +16,13 @@ public class Recipe {
 
     private String preparation;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Ingredient.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Ingredient.class, cascade = CascadeType.PERSIST)
     private List<Ingredient> ingredients;
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Comment.class)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Comment.class, cascade = CascadeType.PERSIST)
     private List<Comment> comments;
 
     public Integer getId() {
