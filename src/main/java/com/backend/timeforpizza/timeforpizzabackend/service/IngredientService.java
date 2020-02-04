@@ -24,7 +24,7 @@ public class IngredientService {
         return addedIngredient != null ? 1 : -1;
     }
 
-    public int addIngredients(List<Ingredient> ingredients) {
+    public int addAllIngredients(List<Ingredient> ingredients) {
         return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
     }
 

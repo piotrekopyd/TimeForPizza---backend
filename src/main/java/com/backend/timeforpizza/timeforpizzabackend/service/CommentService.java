@@ -23,6 +23,10 @@ public class CommentService {
         return commentRepository.save(comment) != null ? 1 : -1;
     }
 
+    public int addAllComments(List<Comment> comments) {
+        return commentRepository.saveAll(comments) != null ? 1 : -1;
+}
+
     public List<Comment> getCommentsByRecipe(Recipe recipe) {
         List<Comment> comments = new ArrayList<>();
         commentRepository.findByRecipe(recipe).forEach(comments::add);

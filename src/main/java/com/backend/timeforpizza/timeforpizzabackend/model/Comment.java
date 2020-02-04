@@ -8,7 +8,7 @@ import javax.validation.constraints.NotNull;
 public class Comment {
     @Id
     @Column(name = "comment_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer commentId;
 
     private String nickname;
@@ -17,7 +17,7 @@ public class Comment {
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipeId", nullable = false)
+    @JoinColumn(name = "recipe_id")
     private Recipe recipe;
 
     public Integer getCommentId() {

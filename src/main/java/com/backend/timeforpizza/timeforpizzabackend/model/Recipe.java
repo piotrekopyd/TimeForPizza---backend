@@ -1,5 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,24 +11,28 @@ import java.util.List;
 public class Recipe {
     @Id
     @Column(name = "recipe_id")
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private Integer id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+//    @GenericGenerator(
+//            name = "native",
+//            strategy = "native"
+//    )
+    private Integer recipeId;
 
     private String name;
 
     private String preparation;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Ingredient.class, cascade = CascadeType.PERSIST)
-    private List<Ingredient> ingredients;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Ingredient.class, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Comment.class, cascade = CascadeType.PERSIST)
-    private List<Comment> comments;
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Comment.class, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    private List<Comment> comments = new ArrayList<>();
 
-    public Integer getId() {
-        return id;
+    public Integer getRecipeId() {
+        return recipeId;
     }
 
     public String getName() {

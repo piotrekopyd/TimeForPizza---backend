@@ -35,7 +35,7 @@ public class RecipeService {
     }
 
     public int updateRecipe(Recipe newRecipe) {
-        Recipe oldRecipe = recipeRepository.findById(newRecipe.getId())
+        Recipe oldRecipe = recipeRepository.findById(newRecipe.getRecipeId())
                 .orElse(null);
         if(oldRecipe != null) {
             oldRecipe.setComments(newRecipe.getComments());
