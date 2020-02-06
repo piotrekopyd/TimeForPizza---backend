@@ -24,10 +24,5 @@ public class CommentController {
         return this.commentService.addComment(comment) > 0;
     }
 
-//    @GetMapping(path = "{personId}")
-//    public List<Comment> getCommentsByPerson(@NotNull @Valid @PathVariable Integer id) {
-//
-//        return commentService.getCommentsByRecipe()
-//    }
 
 }

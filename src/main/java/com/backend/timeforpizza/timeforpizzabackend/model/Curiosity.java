@@ -12,7 +12,7 @@ public class Curiosity {
 
     private String title;
 
-    @Column(name = "curiosity", nullable = false)
+    @Column(name = "curiosity")
     private String curiosity;
 
     public Integer getCuriosityId() {

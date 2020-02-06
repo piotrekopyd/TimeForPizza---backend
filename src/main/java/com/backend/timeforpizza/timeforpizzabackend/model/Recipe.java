@@ -22,13 +22,13 @@ public class Recipe {
 
     private String preparation;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Ingredient.class, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", targetEntity = Comment.class, cascade = CascadeType.PERSIST, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
     private List<Comment> comments = new ArrayList<>();
 
     public Integer getRecipeId() {
@@ -57,6 +57,13 @@ public class Recipe {
 
     public void setIngredients(List<Ingredient> ingredients) {
         this.ingredients = ingredients;
+    }
+
+    public void addIngredient(Ingredient ingredient) {
+        this.ingredients.add(ingredient);
+        System.out.println(ingredient.getIngredientId());
+        System.out.println(ingredient.getRecipe());
+//        ingredient.setRecipe(this);
     }
 
     public String getImageUrl() {
