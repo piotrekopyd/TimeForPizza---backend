@@ -1,5 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 
@@ -20,7 +22,8 @@ public class Ingredient {
     private String unit;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "recipe_id")
+    @JoinColumn(name = "recipe_id", nullable = false)
+    @JsonIgnore
     private Recipe recipe;
 
     public Integer getIngredientId() {

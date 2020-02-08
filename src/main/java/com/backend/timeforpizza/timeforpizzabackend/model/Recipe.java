@@ -1,5 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import org.hibernate.annotations.Fetch;
+import org.hibernate.annotations.FetchMode;
 import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
@@ -12,10 +14,6 @@ public class Recipe {
     @Id
     @Column(name = "recipe_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    @GenericGenerator(
-//            name = "native",
-//            strategy = "native"
-//    )
     private Integer recipeId;
 
     private String name;
@@ -28,7 +26,8 @@ public class Recipe {
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @Fetch(FetchMode.SELECT)
     private List<Comment> comments = new ArrayList<>();
 
     public Integer getRecipeId() {

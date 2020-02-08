@@ -3,6 +3,7 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,36 +15,43 @@ import java.util.List;
 @Service
 public class RecipeService {
     private final RecipeRepository recipeRepository;
+    private final IngredientService ingredientService;
 
     @Autowired
-    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository) {
+    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService) {
         this.recipeRepository = recipeRepository;
+        this.ingredientService = ingredientService;
     }
 
     public int addRecipe(Recipe recipe) {
-        Recipe r = new Recipe();
-        r.setName("Pica");
-        r.setPreparation("Do pieca");
-        r.setImageUrl("img");
+        recipeRepository.save(recipe);
 
-        Ingredient i1 = new Ingredient();
-        i1.setUnit("c");
-        i1.setAmount(20);
-        i1.setName("CAS");
-        i1.setRecipe(r);
+        List<Ingredient> ingredients = recipe.getIngredients();
+        ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
 
-        Ingredient i2 = new Ingredient();
-        i2.setUnit("c2");
-        i2.setAmount(202);
-        i2.setName("CA2S");
-        i2.setRecipe(r);
+        ingredientService.addAllIngredients(ingredients);
+//        Ingredient i1 = new Ingredient();
+//        i1.setUnit("c");
+//        i1.setAmount(20);
+//        i1.setName("CAS");
+//        i1.setRecipe(r);
+//
+//        Ingredient i2 = new Ingredient();
+//        i2.setUnit("c2");
+//        i2.setAmount(202);
+//        i2.setName("CA2S");
+//        i2.setRecipe(r);
 
-        List<Ingredient> i = new ArrayList<>();
-        i.add(i1); i.add(i2);
 
-        r.setIngredients(i);
+//        ingredientService.addIngredient(i1);
+//        ingredientService.addIngredient(i2);
 
-        recipeRepository.save(r);
+//        List<Ingredient> i = new ArrayList<>();
+//        i.add(i1); i.add(i2);
+//
+//        r.setIngredients(i);
+
+//        recipeRepository.save(recipe);
 
         return 1;
 
