@@ -23,6 +23,4 @@ public class CommentController {
     public boolean addComment(@Valid @NotNull @RequestBody Comment comment) {
         return this.commentService.addComment(comment) > 0;
     }
-
-
 }

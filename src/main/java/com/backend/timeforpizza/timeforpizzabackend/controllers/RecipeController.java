@@ -38,4 +38,6 @@ public class RecipeController {
     public boolean updateRecipe(@Valid @NotNull @RequestBody Recipe recipe) {
         return recipeService.updateRecipe(recipe) > 0;
     }
+
+
 }
