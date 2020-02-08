@@ -1,12 +1,15 @@
 package com.backend.timeforpizza.timeforpizzabackend.controllers;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
 import com.backend.timeforpizza.timeforpizzabackend.service.CuriosityService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/curiosities")
@@ -19,20 +22,19 @@ public class CuriosityController {
     }
 
     @PostMapping
-    public boolean addPerson(@Valid @NotNull @RequestBody Curiosity curiosity) {
+    public boolean addCuriosity(@Valid @NotNull @RequestBody CuriosityRequest curiosity) {
         curiosityService.addCuriosity(curiosity);
         return true;
     }
 
     @GetMapping
-    public Iterable<Curiosity> getAllCuriosities() {
+    public List<CuriosityResponse> getAllCuriosities() {
         return curiosityService.getAllCuriosities();
     }
 
     @GetMapping(path = "{id}")
-    public Curiosity getCuriosityById(@PathVariable("id") Integer id) {
-        return curiosityService.getCuriosityById(id)
-                .orElse(null);
+    public CuriosityResponse getCuriosityById(@PathVariable("id") Integer id) {
+        return curiosityService.getCuriosityById(id);
     }
 
     @DeleteMapping(path = "{id}")
@@ -40,9 +42,9 @@ public class CuriosityController {
         curiosityService.deleteCuriosityById(id);
     }
 
-    @PutMapping
-    public void updateCuriosity(@Valid @NotNull @RequestBody Curiosity newCuriosity) {
-        curiosityService.updateCuriosity(newCuriosity);
+    @PutMapping(path = "{id}")
+    public void updateCuriosity(@Valid @NotNull @RequestBody CuriosityRequest newCuriosity, @PathVariable Integer id) {
+        curiosityService.updateCuriosity(id, newCuriosity);
     }
 
 }

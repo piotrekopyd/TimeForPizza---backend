@@ -21,4 +21,9 @@ public class CuriosityRequest {
     public void setCuriosity(String curiosity) {
         this.curiosity = curiosity;
     }
+
+    public CuriosityRequest(String title, String curiosity) {
+        this.title = title;
+        this.curiosity = curiosity;
+    }
 }

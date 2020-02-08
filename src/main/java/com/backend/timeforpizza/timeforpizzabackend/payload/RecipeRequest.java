@@ -34,4 +34,10 @@ public class RecipeRequest {
     public void setIngredients(List<IngredientRequest> ingredients) {
         this.ingredients = ingredients;
     }
+
+    public RecipeRequest(String name, String preparation, List<IngredientRequest> ingredients) {
+        this.name = name;
+        this.preparation = preparation;
+        this.ingredients = ingredients;
+    }
 }

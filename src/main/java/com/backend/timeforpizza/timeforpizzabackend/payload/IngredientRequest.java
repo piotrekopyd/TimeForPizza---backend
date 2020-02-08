@@ -31,4 +31,10 @@ public class IngredientRequest {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public IngredientRequest(String name, Integer amount, String unit) {
+        this.name = name;
+        this.amount = amount;
+        this.unit = unit;
+    }
 }

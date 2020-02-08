@@ -53,4 +53,12 @@ public class RecipeResponse {
     public void setComments(List<CommentResponse> comments) {
         this.comments = comments;
     }
+
+    public RecipeResponse(Integer ingredientId, String name, String preparation, List<IngredientResponse> ingredients, List<CommentResponse> comments) {
+        this.ingredientId = ingredientId;
+        this.name = name;
+        this.preparation = preparation;
+        this.ingredients = ingredients;
+        this.comments = comments;
+    }
 }

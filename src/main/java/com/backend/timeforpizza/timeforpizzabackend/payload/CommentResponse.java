@@ -31,4 +31,10 @@ public class CommentResponse {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public CommentResponse(Integer commentId, String nickname, String comment) {
+        this.commentId = commentId;
+        this.nickname = nickname;
+        this.comment = comment;
+    }
 }

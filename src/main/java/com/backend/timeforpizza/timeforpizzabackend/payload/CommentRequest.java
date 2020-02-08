@@ -22,4 +22,9 @@ public class CommentRequest {
     public void setComment(String comment) {
         this.comment = comment;
     }
+
+    public CommentRequest(String nickname, String comment) {
+        this.nickname = nickname;
+        this.comment = comment;
+    }
 }

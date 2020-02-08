@@ -1,12 +1,16 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @Service
 public class CuriosityService {
@@ -17,25 +21,34 @@ public class CuriosityService {
         this.curiosityRepository = curiosityRepository;
     }
 
-    public int addCuriosity(Curiosity curiosity) {
-        Curiosity addedCuriosity = curiosityRepository.save(curiosity);
-        return addedCuriosity != null ? 1 : - 1;
+    public int addCuriosity(CuriosityRequest curiosityToAdd) {
+        Curiosity curiosity = new Curiosity();
+        curiosity.setCuriosity(curiosityToAdd.getCuriosity());
+        curiosity.setTitle(curiosityToAdd.getTitle());
+
+        return curiosityRepository.save(curiosity) != null ? 1 : - 1;
     }
 
-    public Iterable<Curiosity> getAllCuriosities() {
-        return curiosityRepository.findAll();
+    public List<CuriosityResponse> getAllCuriosities() {
+        List<Curiosity> curiosities = curiosityRepository.findAll();
+
+        return curiosities.stream()
+                .map(curiosity -> new CuriosityResponse(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity()) )
+                .collect(Collectors.toList());
     }
 
-    public Optional<Curiosity> getCuriosityById(Integer id) {
-        return curiosityRepository.findById(id);
+    public CuriosityResponse getCuriosityById(Integer id) {
+        return  curiosityRepository.findById(id)
+                .map(c -> new CuriosityResponse(c.getCuriosityId(), c.getTitle(), c.getCuriosity()))
+                .orElse(null);
     }
 
     public void deleteCuriosityById(Integer id) {
         curiosityRepository.deleteById(id);
     }
 
-    public int updateCuriosity(Curiosity newCuriosity) {
-        Curiosity oldCuriosity = curiosityRepository.findById(newCuriosity.getCuriosityId())
+    public int updateCuriosity(Integer id, CuriosityRequest newCuriosity) {
+        Curiosity oldCuriosity = curiosityRepository.findById(id)
                 .orElse(null);
         if (oldCuriosity != null) {
             oldCuriosity.setTitle(newCuriosity.getTitle());

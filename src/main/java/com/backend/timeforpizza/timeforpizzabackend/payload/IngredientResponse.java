@@ -41,4 +41,11 @@ public class IngredientResponse {
     public void setUnit(String unit) {
         this.unit = unit;
     }
+
+    public IngredientResponse(Integer ingredientId, String name, Integer amount, String unit) {
+        this.ingredientId = ingredientId;
+        this.name = name;
+        this.amount = amount;
+        this.unit = unit;
+    }
 }
