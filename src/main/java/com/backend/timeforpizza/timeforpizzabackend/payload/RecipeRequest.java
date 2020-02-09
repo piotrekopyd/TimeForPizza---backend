@@ -40,4 +40,13 @@ public class RecipeRequest {
         this.preparation = preparation;
         this.ingredients = ingredients;
     }
+
+    @Override
+    public String toString() {
+        return "RecipeRequest{" +
+                "name='" + name + '\'' +
+                ", preparation='" + preparation + '\'' +
+                ", ingredients=" + ingredients +
+                '}';
+    }
 }

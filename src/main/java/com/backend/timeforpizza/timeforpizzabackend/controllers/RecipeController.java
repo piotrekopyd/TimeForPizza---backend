@@ -1,6 +1,9 @@
 package com.backend.timeforpizza.timeforpizzabackend.controllers;
 
-import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
+import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientResponse;
+import com.backend.timeforpizza.timeforpizzabackend.payload.RecipeRequest;
+import com.backend.timeforpizza.timeforpizzabackend.payload.RecipeResponse;
 import com.backend.timeforpizza.timeforpizzabackend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,25 +22,34 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    public List<Recipe> getAllRecipes() {
+    @GetMapping(path = "/all")
+    public List<RecipeResponse> getAllRecipes() {
         return recipeService.getAllRecipes();
     }
 
     @GetMapping(path = "{id}")
-    public Recipe getRecipeById(@PathVariable("id") Integer id) {
+    public RecipeResponse getRecipeById(@PathVariable("id") Integer id) {
         return recipeService.getRecipeById(id);
     }
 
+    @GetMapping(path = "/{recipeId}/ingredients")
+    public List<IngredientResponse> getIngredientsByRecipeId(@PathVariable("recipeId") Integer recipeId) {
+        return recipeService.getAllIngredientsByRecipeId(recipeId);
+    }
+
+    @GetMapping(path = "/{recipeId}/comments")
+    public List<CommentResponse> getCommentsByRecipeId(@PathVariable("recipeId") Integer recipeId) {
+        return recipeService.getAllCommentsByRecipeId(recipeId);
+    }
+
     @PostMapping
-    public boolean addRecipe(@Valid @NotNull @RequestBody Recipe recipe) {
+    public boolean addRecipe(@Valid @NotNull @RequestBody RecipeRequest recipe) {
         return recipeService.addRecipe(recipe) > 0;
     }
 
-    @PutMapping
-    public boolean updateRecipe(@Valid @NotNull @RequestBody Recipe recipe) {
-        return recipeService.updateRecipe(recipe) > 0;
+    @PutMapping(path = "{id}")
+    public boolean updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable Integer id) {
+        return recipeService.updateRecipe(recipeRequest, id) > 0;
     }
-
 
 }

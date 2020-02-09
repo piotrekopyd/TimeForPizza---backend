@@ -48,4 +48,6 @@ public class IngredientResponse {
         this.amount = amount;
         this.unit = unit;
     }
+
+    public IngredientResponse() {}
 }

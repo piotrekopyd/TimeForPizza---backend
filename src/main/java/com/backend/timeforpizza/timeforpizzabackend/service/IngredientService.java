@@ -2,13 +2,17 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientRequest;
+import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.IngredientRepository;
+import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class IngredientService {
@@ -19,23 +23,46 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public int addIngredient(Ingredient ingredient) {
-        Ingredient addedIngredient = ingredientRepository.save(ingredient);
-        return addedIngredient != null ? 1 : -1;
+    public int addIngredient(IngredientRequest ingredientRequest) {
+        return ingredientRepository.save(ModelMapper.mapIngredientRequestToIngredient(ingredientRequest)) != null ? 1 : -1;
     }
 
-    public int addAllIngredients(List<Ingredient> ingredients) {
+    public int addAllIngredients(List<IngredientRequest> ingredientsRequests, Recipe recipe) {
+        List<Ingredient> ingredients = ingredientsRequests.stream()
+                .map(ModelMapper::mapIngredientRequestToIngredient)
+                .collect(Collectors.toList());
+        ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
         return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
     }
 
-    public List<Ingredient> getIngredientsByRecipe(Recipe recipe) {
-        List<Ingredient> ingredients = new ArrayList<>();
-        ingredientRepository.findByRecipe(recipe).forEach(ingredients::add);
-        return ingredients;
+    public int addAllIngredients(List<IngredientRequest> ingredientRequests) {
+        List<Ingredient> ingredients = ingredientRequests.stream()
+                .map(ModelMapper::mapIngredientRequestToIngredient)
+                .collect(Collectors.toList());
+
+        return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
+    }
+//
+//    public int addAllIngredients(List<Ingredient> ingredients) {
+//        return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
+//    }
+
+//    public int addAllIngredients(List<Ingredient> ingredientList) {
+//        return ingredientRepository.saveAll(ingredientList) != null ? 1 : -1;
+//    }
+
+    public List<IngredientResponse> getIngredientsByRecipe(Recipe recipe) {
+        return ingredientRepository.findByRecipe(recipe).stream()
+            .map(ModelMapper::mapIngredientToIngredientResponse)
+            .collect(Collectors.toList());
     }
 
     public void deleteIngredient(Ingredient ingredient) {
         ingredientRepository.delete(ingredient);
+    }
+
+    public void deleteIngredientById(Integer ingredientId) {
+        ingredientRepository.deleteById(ingredientId);
     }
 
     public void deleteIngredientsByRecipe(Recipe recipe) {

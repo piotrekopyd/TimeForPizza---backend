@@ -3,6 +3,7 @@ package com.backend.timeforpizza.timeforpizzabackend.model;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 
 @Entity
@@ -16,6 +17,7 @@ public class Comment {
     private String nickname;
 
     @NotNull
+    @NotBlank
     private String comment;
 
     @ManyToOne(fetch = FetchType.LAZY)

@@ -20,13 +20,13 @@ public class Recipe {
 
     private String preparation;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
 
     @Column(name = "image_url")
     private String imageUrl;
 
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", cascade = CascadeType.ALL, orphanRemoval = true)
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
     private List<Comment> comments = new ArrayList<>();
 

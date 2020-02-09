@@ -1,11 +1,15 @@
 package com.backend.timeforpizza.timeforpizzabackend.payload;
 
 
+import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+
 public class CommentRequest {
 
     private String nickname;
 
     private String comment;
+
+    private Recipe recipe;
 
     public String getNickname() {
         return nickname;
@@ -21,6 +25,14 @@ public class CommentRequest {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
     }
 
     public CommentRequest(String nickname, String comment) {

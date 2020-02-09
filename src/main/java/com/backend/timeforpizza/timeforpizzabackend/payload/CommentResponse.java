@@ -37,4 +37,6 @@ public class CommentResponse {
         this.nickname = nickname;
         this.comment = comment;
     }
+
+    public CommentResponse() {}
 }

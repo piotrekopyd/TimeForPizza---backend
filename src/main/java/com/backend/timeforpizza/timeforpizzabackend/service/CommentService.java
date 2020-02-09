@@ -2,13 +2,18 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CommentRequest;
+import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository;
+import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.ModelMap;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -19,35 +24,31 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
+    public int addComment(CommentRequest commentRequest) {
+        Comment comment = ModelMapper.mapCommentRequestToComment(commentRequest);
+        return commentRepository.save(comment) != null ? 1 : -1;
+    }
+
     public int addComment(Comment comment) {
         return commentRepository.save(comment) != null ? 1 : -1;
     }
 
-    public int addAllComments(List<Comment> comments) {
-        return commentRepository.saveAll(comments) != null ? 1 : -1;
-}
-
-    public List<Comment> getCommentsByRecipe(Recipe recipe) {
-        List<Comment> comments = new ArrayList<>();
-        commentRepository.findByRecipe(recipe).forEach(comments::add);
-        return comments;
+    public CommentResponse getCommentById(Integer id) {
+         return commentRepository.findById(id)
+                .map(ModelMapper::mapCommentToCommentResponse)
+                .orElse(null);
     }
 
-    public void deleteComment(Comment comment) {
-        commentRepository.delete(comment);
+    public void deleteCommentById(Integer commentId) {
+        commentRepository.deleteById(commentId);
     }
 
-    public void deleteCommentsByRecipe(Recipe recipe) {
-        commentRepository.deleteByRecipe(recipe);
-    }
-
-    public int updateComment(Comment newComment) {
-        Comment oldComment = commentRepository.findById(newComment.getCommentId())
+    public int updateComment(CommentRequest newComment, Integer commentId) {
+        Comment oldComment = commentRepository.findById(commentId)
                 .orElse(null);
         if(oldComment != null) {
             oldComment.setComment(newComment.getComment());
             oldComment.setNickname(newComment.getNickname());
-            oldComment.setRecipe(newComment.getRecipe());
             commentRepository.save(oldComment);
             return 1;
         }

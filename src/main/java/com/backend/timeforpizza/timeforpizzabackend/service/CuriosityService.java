@@ -56,6 +56,7 @@ public class CuriosityService {
             curiosityRepository.save(oldCuriosity);
             return 1;
         }
+
         return - 1;
     }
 
