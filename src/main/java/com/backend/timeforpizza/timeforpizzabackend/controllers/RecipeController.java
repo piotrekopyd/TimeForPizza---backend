@@ -1,9 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.controllers;
 
-import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
-import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientResponse;
-import com.backend.timeforpizza.timeforpizzabackend.payload.RecipeRequest;
-import com.backend.timeforpizza.timeforpizzabackend.payload.RecipeResponse;
+import com.backend.timeforpizza.timeforpizzabackend.payload.*;
 import com.backend.timeforpizza.timeforpizzabackend.service.RecipeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -45,6 +42,11 @@ public class RecipeController {
     @PostMapping
     public boolean addRecipe(@Valid @NotNull @RequestBody RecipeRequest recipe) {
         return recipeService.addRecipe(recipe) > 0;
+    }
+
+    @PostMapping(path = "/{recipeId}/comments")
+    public boolean addComment(@Valid @NotNull @RequestBody CommentRequest commentRequest, @PathVariable("recipeId") Integer recipeId) {
+        return recipeService.addComment(commentRequest, recipeId) > 0;
     }
 
     @PutMapping(path = "{id}")

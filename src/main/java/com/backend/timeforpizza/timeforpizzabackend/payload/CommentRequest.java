@@ -39,4 +39,12 @@ public class CommentRequest {
         this.nickname = nickname;
         this.comment = comment;
     }
+
+    public CommentRequest(String nickname, String comment, Recipe recipe) {
+        this.nickname = nickname;
+        this.comment = comment;
+        this.recipe = recipe;
+    }
+
+    public CommentRequest() {}
 }

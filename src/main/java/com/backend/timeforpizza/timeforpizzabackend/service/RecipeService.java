@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.*;
@@ -17,11 +18,13 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
+    private final CommentService commentService;
 
     @Autowired
-    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService) {
+    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService) {
         this.recipeRepository = recipeRepository;
         this.ingredientService = ingredientService;
+        this.commentService = commentService;
     }
 
     public int addRecipe(RecipeRequest recipeRequest) {
@@ -33,6 +36,20 @@ public class RecipeService {
             if (ingredientService.addAllIngredients(ingredientRequests) > 0) {
                 return 1;
             }
+        }
+
+        return -1;
+    }
+
+    public int addComment(CommentRequest commentRequest, Integer recipeId) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElse(null);
+
+        if(recipe != null) {
+            Comment comment = ModelMapper.mapCommentRequestToComment(commentRequest);
+            comment.setRecipe(recipe);
+            commentService.addComment(comment);
+            return 1;
         }
 
         return -1;
