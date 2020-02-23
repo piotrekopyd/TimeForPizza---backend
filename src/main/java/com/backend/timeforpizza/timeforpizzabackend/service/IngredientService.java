@@ -42,14 +42,6 @@ public class IngredientService {
 
         return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
     }
-//
-//    public int addAllIngredients(List<Ingredient> ingredients) {
-//        return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
-//    }
-
-//    public int addAllIngredients(List<Ingredient> ingredientList) {
-//        return ingredientRepository.saveAll(ingredientList) != null ? 1 : -1;
-//    }
 
     public List<IngredientResponse> getIngredientsByRecipe(Recipe recipe) {
         return ingredientRepository.findByRecipe(recipe).stream()
