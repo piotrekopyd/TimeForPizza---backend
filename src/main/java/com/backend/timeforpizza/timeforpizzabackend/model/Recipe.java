@@ -2,7 +2,6 @@ package com.backend.timeforpizza.timeforpizzabackend.model;
 
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
-import org.hibernate.annotations.GenericGenerator;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -23,8 +22,12 @@ public class Recipe {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe")
     private List<Ingredient> ingredients = new ArrayList<>();
 
-    @Column(name = "image_url")
-    private String imageUrl;
+    @Column(name = "miniature_image_url")
+    private String miniatureImageUrl;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
+    @Fetch(FetchMode.SELECT)
+    private List<ImageUrl> imagesUrls = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
@@ -58,19 +61,20 @@ public class Recipe {
         this.ingredients = ingredients;
     }
 
-    public void addIngredient(Ingredient ingredient) {
-        this.ingredients.add(ingredient);
-        System.out.println(ingredient.getIngredientId());
-        System.out.println(ingredient.getRecipe());
-//        ingredient.setRecipe(this);
+    public String getMiniatureImageUrl() {
+        return miniatureImageUrl;
     }
 
-    public String getImageUrl() {
-        return imageUrl;
+    public void setMiniatureImageUrl(String miniatureImageUrl) {
+        this.miniatureImageUrl = miniatureImageUrl;
     }
 
-    public void setImageUrl(String imageUrl) {
-        this.imageUrl = imageUrl;
+    public List<ImageUrl> getImagesUrls() {
+        return imagesUrls;
+    }
+
+    public void setImagesUrls(List<ImageUrl> imagesUrls) {
+        this.imagesUrls = imagesUrls;
     }
 
     public List<Comment> getComments() {
