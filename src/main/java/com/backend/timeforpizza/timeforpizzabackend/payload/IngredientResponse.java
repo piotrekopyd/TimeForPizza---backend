@@ -2,7 +2,7 @@ package com.backend.timeforpizza.timeforpizzabackend.payload;
 
 public class IngredientResponse {
 
-    private Integer ingredientId;
+    private Long ingredientId;
 
     private String name;
 
@@ -10,11 +10,11 @@ public class IngredientResponse {
 
     private String unit;
 
-    public Integer getIngredientId() {
+    public Long getIngredientId() {
         return ingredientId;
     }
 
-    public void setIngredientId(Integer ingredientId) {
+    public void setIngredientId(Long ingredientId) {
         this.ingredientId = ingredientId;
     }
 
@@ -42,7 +42,7 @@ public class IngredientResponse {
         this.unit = unit;
     }
 
-    public IngredientResponse(Integer ingredientId, String name, Integer amount, String unit) {
+    public IngredientResponse(Long ingredientId, String name, Integer amount, String unit) {
         this.ingredientId = ingredientId;
         this.name = name;
         this.amount = amount;

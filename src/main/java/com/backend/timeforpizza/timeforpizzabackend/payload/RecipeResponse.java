@@ -4,7 +4,7 @@ import java.util.List;
 
 public class RecipeResponse {
 
-    private Integer recipeId;
+    private Long recipeId;
 
     private String name;
 
@@ -14,11 +14,11 @@ public class RecipeResponse {
 
     private List<CommentResponse> comments;
 
-    public Integer getRecipeId() {
+    public Long getRecipeId() {
         return recipeId;
     }
 
-    public void setRecipeId(Integer recipeId) {
+    public void setRecipeId(Long recipeId) {
         this.recipeId = recipeId;
     }
 
@@ -54,7 +54,7 @@ public class RecipeResponse {
         this.comments = comments;
     }
 
-    public RecipeResponse(Integer recipeId, String name, String preparation, List<IngredientResponse> ingredients, List<CommentResponse> comments) {
+    public RecipeResponse(Long recipeId, String name, String preparation, List<IngredientResponse> ingredients, List<CommentResponse> comments) {
         this.recipeId = recipeId;
         this.name = name;
         this.preparation = preparation;

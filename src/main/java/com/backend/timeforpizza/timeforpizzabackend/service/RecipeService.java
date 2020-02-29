@@ -41,7 +41,7 @@ public class RecipeService {
         return -1;
     }
 
-    public int addComment(CommentRequest commentRequest, Integer recipeId) {
+    public int addComment(CommentRequest commentRequest, Long recipeId) {
         Recipe recipe = recipeRepository.findById(recipeId)
                 .orElse(null);
 
@@ -55,7 +55,7 @@ public class RecipeService {
         return -1;
     }
 
-    public RecipeResponse getRecipeById(Integer id) {
+    public RecipeResponse getRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElse(null);
@@ -67,7 +67,7 @@ public class RecipeService {
                     .collect(Collectors.toList());
     }
 
-    public List<CommentResponse> getAllCommentsByRecipeId(Integer recipeId) {
+    public List<CommentResponse> getAllCommentsByRecipeId(Long recipeId) {
         RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElse(null);
@@ -79,7 +79,7 @@ public class RecipeService {
         return new ArrayList<>();
     }
 
-    public List<IngredientResponse> getAllIngredientsByRecipeId(Integer recipeId) {
+    public List<IngredientResponse> getAllIngredientsByRecipeId(Long recipeId) {
         RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElse(null);
@@ -91,7 +91,7 @@ public class RecipeService {
         return new ArrayList<>();
     }
 
-    public int updateRecipe(RecipeRequest recipeRequest, Integer recipeId) {
+    public int updateRecipe(RecipeRequest recipeRequest, Long recipeId) {
         Recipe oldRecipe = recipeRepository.findById(recipeId)
                 .orElse(null);
         if(oldRecipe != null) {

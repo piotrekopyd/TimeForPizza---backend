@@ -1,7 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
-import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CommentRequest;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository;
@@ -9,11 +8,6 @@ import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.ModelMap;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Service
 public class CommentService {
@@ -33,17 +27,17 @@ public class CommentService {
         return commentRepository.save(comment) != null ? 1 : -1;
     }
 
-    public CommentResponse getCommentById(Integer id) {
+    public CommentResponse getCommentById(Long id) {
          return commentRepository.findById(id)
                 .map(ModelMapper::mapCommentToCommentResponse)
                 .orElse(null);
     }
 
-    public void deleteCommentById(Integer commentId) {
+    public void deleteCommentById(Long commentId) {
         commentRepository.deleteById(commentId);
     }
 
-    public int updateComment(CommentRequest newComment, Integer commentId) {
+    public int updateComment(CommentRequest newComment, Long commentId) {
         Comment oldComment = commentRepository.findById(commentId)
                 .orElse(null);
         if(oldComment != null) {

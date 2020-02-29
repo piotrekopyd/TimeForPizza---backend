@@ -2,17 +2,17 @@ package com.backend.timeforpizza.timeforpizzabackend.payload;
 
 public class CommentResponse {
 
-    private Integer commentId;
+    private Long commentId;
 
     private String nickname;
 
     private String comment;
 
-    public Integer getCommentId() {
+    public Long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Integer commentId) {
+    public void setCommentId(Long commentId) {
         this.commentId = commentId;
     }
 
@@ -32,7 +32,7 @@ public class CommentResponse {
         this.comment = comment;
     }
 
-    public CommentResponse(Integer commentId, String nickname, String comment) {
+    public CommentResponse(Long commentId, String nickname, String comment) {
         this.commentId = commentId;
         this.nickname = nickname;
         this.comment = comment;

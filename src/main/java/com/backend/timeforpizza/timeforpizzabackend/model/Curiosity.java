@@ -8,14 +8,14 @@ public class Curiosity {
     @Id
     @Column(name = "curiosity_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
-    private Integer curiosityId;
+    private Long curiosityId;
 
     private String title;
 
     @Column(name = "curiosity")
     private String curiosity;
 
-    public Integer getCuriosityId() {
+    public Long getCuriosityId() {
         return curiosityId;
     }
 

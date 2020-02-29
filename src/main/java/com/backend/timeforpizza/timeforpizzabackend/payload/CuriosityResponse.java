@@ -3,17 +3,17 @@ package com.backend.timeforpizza.timeforpizzabackend.payload;
 
 public class CuriosityResponse {
 
-    private Integer curiosityId;
+    private Long curiosityId;
 
     private String title;
 
     private String curiosity;
 
-    public Integer getCuriosityId() {
+    public Long getCuriosityId() {
         return curiosityId;
     }
 
-    public void setCuriosityId(Integer curiosityId) {
+    public void setCuriosityId(Long curiosityId) {
         this.curiosityId = curiosityId;
     }
 
@@ -33,7 +33,7 @@ public class CuriosityResponse {
         this.curiosity = curiosity;
     }
 
-    public CuriosityResponse(Integer curiosityId, String title, String curiosity) {
+    public CuriosityResponse(Long curiosityId, String title, String curiosity) {
         this.curiosityId = curiosityId;
         this.title = title;
         this.curiosity = curiosity;

@@ -12,7 +12,7 @@ public class Comment {
     @Id
     @Column(name = "comment_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer commentId;
+    private Long commentId;
 
     private String nickname;
 
@@ -25,7 +25,7 @@ public class Comment {
     @JsonIgnore
     private Recipe recipe;
 
-    public Integer getCommentId() {
+    public Long getCommentId() {
         return commentId;
     }
 

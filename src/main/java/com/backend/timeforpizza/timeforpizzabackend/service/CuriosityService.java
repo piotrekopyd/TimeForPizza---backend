@@ -9,7 +9,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,17 +36,17 @@ public class CuriosityService {
                 .collect(Collectors.toList());
     }
 
-    public CuriosityResponse getCuriosityById(Integer id) {
+    public CuriosityResponse getCuriosityById(Long id) {
         return  curiosityRepository.findById(id)
                 .map(c -> new CuriosityResponse(c.getCuriosityId(), c.getTitle(), c.getCuriosity()))
                 .orElse(null);
     }
 
-    public void deleteCuriosityById(Integer id) {
+    public void deleteCuriosityById(Long id) {
         curiosityRepository.deleteById(id);
     }
 
-    public int updateCuriosity(Integer id, CuriosityRequest newCuriosity) {
+    public int updateCuriosity(Long id, CuriosityRequest newCuriosity) {
         Curiosity oldCuriosity = curiosityRepository.findById(id)
                 .orElse(null);
         if (oldCuriosity != null) {

@@ -25,17 +25,17 @@ public class RecipeController {
     }
 
     @GetMapping(path = "{id}")
-    public RecipeResponse getRecipeById(@PathVariable("id") Integer id) {
+    public RecipeResponse getRecipeById(@PathVariable("id") Long id) {
         return recipeService.getRecipeById(id);
     }
 
     @GetMapping(path = "/{recipeId}/ingredients")
-    public List<IngredientResponse> getIngredientsByRecipeId(@PathVariable("recipeId") Integer recipeId) {
+    public List<IngredientResponse> getIngredientsByRecipeId(@PathVariable("recipeId") Long recipeId) {
         return recipeService.getAllIngredientsByRecipeId(recipeId);
     }
 
     @GetMapping(path = "/{recipeId}/comments")
-    public List<CommentResponse> getCommentsByRecipeId(@PathVariable("recipeId") Integer recipeId) {
+    public List<CommentResponse> getCommentsByRecipeId(@PathVariable("recipeId") Long recipeId) {
         return recipeService.getAllCommentsByRecipeId(recipeId);
     }
 
@@ -45,12 +45,12 @@ public class RecipeController {
     }
 
     @PostMapping(path = "/{recipeId}/comments")
-    public boolean addComment(@Valid @NotNull @RequestBody CommentRequest commentRequest, @PathVariable("recipeId") Integer recipeId) {
+    public boolean addComment(@Valid @NotNull @RequestBody CommentRequest commentRequest, @PathVariable("recipeId") Long recipeId) {
         return recipeService.addComment(commentRequest, recipeId) > 0;
     }
 
     @PutMapping(path = "{id}")
-    public boolean updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable Integer id) {
+    public boolean updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable Long id) {
         return recipeService.updateRecipe(recipeRequest, id) > 0;
     }
 

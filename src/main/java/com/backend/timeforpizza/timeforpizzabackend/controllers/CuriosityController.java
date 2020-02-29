@@ -33,17 +33,17 @@ public class CuriosityController {
     }
 
     @GetMapping(path = "{id}")
-    public CuriosityResponse getCuriosityById(@PathVariable("id") Integer id) {
+    public CuriosityResponse getCuriosityById(@PathVariable("id") Long id) {
         return curiosityService.getCuriosityById(id);
     }
 
     @DeleteMapping(path = "{id}")
-    public void deleteCuriosityById(@PathVariable("id") Integer id) {
+    public void deleteCuriosityById(@PathVariable("id") Long id) {
         curiosityService.deleteCuriosityById(id);
     }
 
     @PutMapping(path = "{id}")
-    public void updateCuriosity(@Valid @NotNull @RequestBody CuriosityRequest newCuriosity, @PathVariable Integer id) {
+    public void updateCuriosity(@Valid @NotNull @RequestBody CuriosityRequest newCuriosity, @PathVariable Long id) {
         curiosityService.updateCuriosity(id, newCuriosity);
     }
 

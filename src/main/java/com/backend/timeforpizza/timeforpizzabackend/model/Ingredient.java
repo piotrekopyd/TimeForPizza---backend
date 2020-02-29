@@ -11,7 +11,7 @@ public class Ingredient {
     @Id
     @Column(name = "ingredient_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Integer ingredientId;
+    private Long ingredientId;
 
     @NotNull
     private String name;
@@ -26,11 +26,11 @@ public class Ingredient {
     @JsonIgnore
     private Recipe recipe;
 
-    public Integer getIngredientId() {
+    public Long getIngredientId() {
         return ingredientId;
     }
 
-    public void setIngredientId(Integer ingredientId) {
+    public void setIngredientId(Long ingredientId) {
         this.ingredientId = ingredientId;
     }
 
