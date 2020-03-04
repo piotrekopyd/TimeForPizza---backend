@@ -1,25 +1,24 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesRepository;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
-import java.util.logging.SocketHandler;
 
 @Service
 public class ImagesService {
 
     private ImagesRepository imagesRepository;
 
-    private GoogleCloudStorageService googleCloudStorageService;
+    private ImagesStorageRepository imagesStorageRepository;
 
-    ImagesService(@Qualifier("imagesRepository") ImagesRepository imagesRepository, GoogleCloudStorageService googleCloudStorageService) {
+    ImagesService(@Qualifier("imagesRepository") ImagesRepository imagesRepository, @Qualifier("googleCloudStorage") ImagesStorageRepository imagesStorageRepository) {
         this.imagesRepository = imagesRepository;
-        this.googleCloudStorageService = googleCloudStorageService;
+        this.imagesStorageRepository = imagesStorageRepository;
     }
 
     public void deleteFile() {
@@ -30,7 +29,7 @@ public class ImagesService {
     public void uploadImages(Long recipeId, MultipartFile[] multipartFiles) {
         for (MultipartFile file: multipartFiles) {
             try {
-                googleCloudStorageService.uploadObject(file);
+                imagesStorageRepository.uploadFile(file);
                 System.out.println(file.getName());
 
             } catch (IOException e) {
