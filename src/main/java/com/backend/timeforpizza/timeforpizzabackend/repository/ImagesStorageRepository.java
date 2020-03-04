@@ -7,6 +7,6 @@ import java.io.IOException;
 
 @Repository
 public interface ImagesStorageRepository {
-    public String uploadFile(MultipartFile file) throws IOException;
+    public String uploadFile(MultipartFile file, Long recipeId) throws IOException;
     public void deleteFile(String objectName);
 }

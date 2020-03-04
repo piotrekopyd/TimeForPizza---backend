@@ -51,13 +51,17 @@ public class RecipeService {
             commentService.addComment(comment);
             return 1;
         }
-
         return -1;
     }
 
     public RecipeResponse getRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
+                .orElse(null);
+    }
+
+    Recipe getRecipe(Long id) {
+        return recipeRepository.findById(id)
                 .orElse(null);
     }
 

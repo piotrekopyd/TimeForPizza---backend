@@ -8,8 +8,10 @@ import javax.persistence.*;
 public class ImageUrl {
     @Id
     @Column(name = "image_url_id")
+    @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long imageUrlId;
 
+//    @Column(unique = true)
     private String url;
 
     @ManyToOne(fetch = FetchType.LAZY)
@@ -31,5 +33,20 @@ public class ImageUrl {
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public Recipe getRecipe() {
+        return recipe;
+    }
+
+    public void setRecipe(Recipe recipe) {
+        this.recipe = recipe;
+    }
+
+    public ImageUrl(String url) {
+        this.url = url;
+    }
+
+    public ImageUrl() {
     }
 }

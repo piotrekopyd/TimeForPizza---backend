@@ -25,6 +25,9 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
     @Value("${google.cloud.storage.credentials.path}")
     private String credentialsPath;
 
+    @Value("${google.cloud.storage.api.path}")
+    private String storageApiPath;
+
     private Storage storage;
 
     private RecipeService recipeService;
@@ -48,15 +51,17 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
         }
     }
 
-    public String uploadFile(MultipartFile file) throws IOException {
+    public String uploadFile(MultipartFile file, Long recipeId) throws IOException {
 
-        String fileName = file.getOriginalFilename() != null ? file.getOriginalFilename() : "";
+        String fileName = file.getOriginalFilename() != null ? recipeId + "/" + file.getOriginalFilename() : "";
         BlobId blobId = BlobId.of(this.bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
         Blob blob = storage.create(blobInfo, file.getBytes());
+        return buildImagePath(blob.getName());
+    }
 
-        System.out.println("");
-        return "";
+    private String buildImagePath(String fileName) {
+        return storageApiPath + bucketName + "/" + fileName;
     }
 
     @Override
