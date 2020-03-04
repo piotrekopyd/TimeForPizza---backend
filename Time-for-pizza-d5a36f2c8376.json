@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "time-for-pizza",
+  "private_key_id": "d5a36f2c8376aa37937c4bc91589f19ae3fee67c",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQDZcRdF66yv2fbO\nsb4NdS9NCuPMGfNI2e1HkdDiGJPea/pArclxWkISJ9T3eWgnKa/cytFLcTV0cXQN\n4gH78raAvDNncLg3snfQC12l/NKyvJfB1PrG8f7QH9zXJMvWXFO59ewn5SZFcT2Y\n16aZcAGDrqXzCE1J4QyDDXPiej5GgKBJrCU5vavq38C4JZWvVYChF7SeR3SodIcd\n1Sx0D3kaYpu8taLyU959YJZDl/n0s/16yYUCxiAkIsPeCuC+1R3imbG1IqtNP5Lb\nidNhmuOmmnuwvqmw91nJ1K1SE+xyuddPnG744Rd6CwWHU7XkSJ1tGl89RKM51KFf\ndwl0zoFrAgMBAAECggEAAXpk05taBaoAJQCNT68bvrTTvpfwkO62T7W8i0TqgGkQ\nfu8Pfv9DkrcFmhcPr7B3WxNf39jpqZx50vxV0h4gwnhFCy93eR1z9gyVuuKglgl1\nKKKnf8G2XzjQOgAsiI0BHrL+w3ipzXALIKZaohFiWUBPLXtBdz6Z5KwrPP9iu/zx\npLW3YbUo0FBigASNlYe6SygW5HMKmAs+HvNyqbz0e6Xegfn2KCosgjfdyl5lMyMk\nhPQyKBq8J87wRmcjbzEaVrPrx0qCXbwRkUsvJtIZ3dK9Iw5+QyG8Kx8h/E88Wdv8\n6k5F3RFGQvMP9POF5D0IkbniI2Z2BKRFtQBEjKbwVQKBgQDwCOb90PK8CsnRPYmp\nwLJccoCXXqYVy6w4ZVhNoJ7gseEP6WVSmltl7t5H+QZ+WxEEmqnB2jjSO0uCVxWl\nCUugD98YSdPBHf+z3HvPPjYdMRfAOqjBZaiukkFB7rfYw2rTSdhUwfcIezdsoknx\nptKrRANWZTQUBhTdu4ITbIhhZQKBgQDn5361Y09gznH747yeBXGJYl/rzsCpzaYF\noXZ74bzlEBjfhgr+YrLXJWwtZuftEmaLo6nmCd8KXXAPoAEbVvz5xMnWfvfEZ+N3\n7avI8rEYGcu73buBpmN4cbpu3n3jXF3MZsVxE36zNmFMdduZR49XJateTTu0NQTO\nsFN1pbsSjwKBgQDeY3EX8fIitGAdY0VbKDRYIKHxHHkGMoiiS4sPiOQKS+O4KUZ9\nzJMnkrMQvbD9eoP+3wiumO8SIGuqG+Lq3/zYFDxfNW9iOdgBnSJ8dSgPzb8yk2Zs\noDIzYz/gxTpCM3OSxJUQmhC1I+vK02Vs5WHD2aS589PXRXcppCM0udZ1XQKBgQDi\nWGKl7D5nwFgkgM1yduGwNCJnaC9IDP7EdCnPFC9oa+O7F3vXesIPl+kUD2LDU7hf\nBuknK+9UkIp11bf+1VKo/lf6UYbHXpb4UTPgOHB9k3/056DCFIL15hsPZ3370gWD\nIbQIf/ykMqmZFVe3Lc9MQeoXas6hPzZn/lYXeCE1JQKBgGUxjbrMrpVda04d0FHr\n4/7Nw+kopLAuavb7ssQ5yMxMEiPqPWkrzO7f9LqQ9S9/0y1HshszI+AdyEXC263M\nmv0Ml5GuxIZ46VyQ1bbL0dRdUsjz+8Af9RGc5u4zDdMjSIwBWOGYTLKsfyItBlkC\nrG/KnTNBLDn8lhghfbycp0QC\n-----END PRIVATE KEY-----\n",
+  "client_email": "piotrek-opyd@time-for-pizza.iam.gserviceaccount.com",
+  "client_id": "105688987316950069499",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/piotrek-opyd%40time-for-pizza.iam.gserviceaccount.com"
+}
