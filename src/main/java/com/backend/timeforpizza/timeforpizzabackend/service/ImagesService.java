@@ -1,7 +1,8 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
-import com.backend.timeforpizza.timeforpizzabackend.model.ImageUrl;
+import com.backend.timeforpizza.timeforpizzabackend.model.Image;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesRepository;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -10,19 +11,21 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class ImagesService {
 
     private ImagesRepository imagesRepository;
 
-    private ImagesStorageRepository imagesStorageRepository;
+    private ImagesStorageRepository imagesStorageService;
 
     private RecipeService recipeService;
 
-    ImagesService(@Qualifier("imagesRepository") ImagesRepository imagesRepository, @Qualifier("googleCloudStorage") ImagesStorageRepository imagesStorageRepository, RecipeService recipeService) {
+    ImagesService(@Qualifier("imagesRepository") ImagesRepository imagesRepository, @Qualifier("googleCloudStorage") ImagesStorageRepository imagesStorageService, RecipeService recipeService) {
         this.imagesRepository = imagesRepository;
-        this.imagesStorageRepository = imagesStorageRepository;
+        this.imagesStorageService = imagesStorageService;
         this.recipeService = recipeService;
     }
 
@@ -30,8 +33,8 @@ public class ImagesService {
     public void uploadImages(Long recipeId, MultipartFile[] multipartFiles) {
         for (MultipartFile file: multipartFiles) {
             try {
-                String path = imagesStorageRepository.uploadFile(file, recipeId);
-                ImageUrl imageUrl = saveImagePathToDatabase(recipeId, path);
+                String path = imagesStorageService.uploadFile(file, recipeId);
+                Image image = saveImagePathToDatabase(recipeId, path);
                 System.out.println("");
             } catch (IOException e) {
                 System.out.println(e.getMessage());
@@ -39,24 +42,33 @@ public class ImagesService {
         }
     }
 
-    private ImageUrl saveImagePathToDatabase(Long recipeId, String path) {
-        ImageUrl imageUrl = new ImageUrl(path);
+    private Image saveImagePathToDatabase(Long recipeId, String path) {
+        Image image = new Image(path);
         Recipe recipe = recipeService.getRecipe(recipeId);
         if(recipe != null) {
-            imageUrl.setRecipe(recipe);
+            image.setRecipe(recipe);
 
             if(imagesRepository.existsByUrlAndRecipe(path, recipe)) {
-                imageUrl = imagesRepository.findByUrlAndRecipe(path, recipe).get();
+                image = imagesRepository.findByUrlAndRecipe(path, recipe).get();
             }
-            return imagesRepository.save(imageUrl);
+            return imagesRepository.save(image);
         }
         return null;
     }
 
+    @Transactional
+    public void deleteImages(List<DeleteImageRequest> deleteImageRequestList) {
+        for(DeleteImageRequest request: deleteImageRequestList) {
+            Optional<Image> image = imagesRepository.findById(request.getImageId());
+            if(image.isPresent()) {
+                deleteImageById(request.getImageId());
+                imagesStorageService.deleteFile(image.get().getRecipe().getRecipeId(), request.getImageName());
+            }
+        }
+    }
 
-
-    /** TODO*/
-    public void deleteFile(Long recipeId, String fileName) {
+    private void deleteImageById(Long imageId) {
+        imagesRepository.deleteById(imageId);
     }
 
     public void uploadImage(MultipartFile multipartFile) {

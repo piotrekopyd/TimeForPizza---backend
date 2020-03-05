@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.controllers;
 
+import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
 import com.backend.timeforpizza.timeforpizzabackend.service.GoogleCloudStorageService;
 import com.backend.timeforpizza.timeforpizzabackend.service.ImagesService;
@@ -7,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.List;
 
 @RestController
 @RequestMapping(path = "/images")
@@ -26,5 +28,10 @@ public class ImagesController {
     @PostMapping()
     public void uploadImages(@RequestParam("file") MultipartFile multipartFiles) throws IOException {
         imagesService.uploadImage(multipartFiles);
+    }
+
+    @DeleteMapping
+    public void deleteImages(@RequestBody List<DeleteImageRequest> deleteImageRequests) {
+        imagesService.deleteImages(deleteImageRequests);
     }
 }

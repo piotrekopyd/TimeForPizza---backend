@@ -30,10 +30,7 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
 
     private Storage storage;
 
-    private RecipeService recipeService;
-
-    public GoogleCloudStorageService(RecipeService recipeService) {
-        this.recipeService = recipeService;
+    public GoogleCloudStorageService() {
     }
 
     @PostConstruct
@@ -60,13 +57,14 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
         return buildImagePath(blob.getName());
     }
 
+    public void deleteFile(Long recipeId, String objectName) {
+        String fileName = recipeId + "/" + objectName;
+        storage.delete(bucketName, fileName);
+    }
+
     private String buildImagePath(String fileName) {
         return storageApiPath + bucketName + "/" + fileName;
     }
 
-    @Override
-    public void deleteFile(String objectName) {
-        Storage storage1 = StorageOptions.newBuilder().setProjectId(projectId).build().getService();
-        storage1.delete(bucketName, objectName);
-    }
+
 }

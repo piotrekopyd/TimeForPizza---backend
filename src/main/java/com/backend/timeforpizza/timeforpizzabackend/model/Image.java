@@ -5,14 +5,17 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
-public class ImageUrl {
+public class Image {
     @Id
     @Column(name = "image_url_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
     private Long imageUrlId;
 
-//    @Column(unique = true)
+    @Column(unique = true)
     private String url;
+
+    @Column(name = "image_name")
+    private String imageName;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "recipe_id", nullable = false)
@@ -43,10 +46,10 @@ public class ImageUrl {
         this.recipe = recipe;
     }
 
-    public ImageUrl(String url) {
+    public Image(String url) {
         this.url = url;
     }
 
-    public ImageUrl() {
+    public Image() {
     }
 }

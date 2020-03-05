@@ -27,7 +27,7 @@ public class Recipe {
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
-    private List<ImageUrl> imagesUrls = new ArrayList<>();
+    private List<Image> imagesUrls = new ArrayList<>();
 
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
@@ -69,11 +69,11 @@ public class Recipe {
         this.miniatureImageUrl = miniatureImageUrl;
     }
 
-    public List<ImageUrl> getImagesUrls() {
+    public List<Image> getImagesUrls() {
         return imagesUrls;
     }
 
-    public void setImagesUrls(List<ImageUrl> imagesUrls) {
+    public void setImagesUrls(List<Image> imagesUrls) {
         this.imagesUrls = imagesUrls;
     }
 
