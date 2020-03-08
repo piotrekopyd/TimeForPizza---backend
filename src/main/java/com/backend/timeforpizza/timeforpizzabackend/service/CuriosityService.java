@@ -4,6 +4,7 @@ import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
+import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -20,12 +21,16 @@ public class CuriosityService {
         this.curiosityRepository = curiosityRepository;
     }
 
-    public int addCuriosity(CuriosityRequest curiosityToAdd) {
+    public CuriosityResponse addCuriosity(CuriosityRequest curiosityToAdd) {
         Curiosity curiosity = new Curiosity();
         curiosity.setCuriosity(curiosityToAdd.getCuriosity());
         curiosity.setTitle(curiosityToAdd.getTitle());
 
-        return curiosityRepository.save(curiosity) != null ? 1 : - 1;
+        return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(curiosity));
+    }
+
+    Curiosity addCuriosity(Curiosity curiosity) {
+        return curiosityRepository.save(curiosity);
     }
 
     public List<CuriosityResponse> getAllCuriosities() {
@@ -46,17 +51,15 @@ public class CuriosityService {
         curiosityRepository.deleteById(id);
     }
 
-    public int updateCuriosity(Long id, CuriosityRequest newCuriosity) {
+    public CuriosityResponse updateCuriosity(Long id, CuriosityRequest newCuriosity) {
         Curiosity oldCuriosity = curiosityRepository.findById(id)
                 .orElse(null);
         if (oldCuriosity != null) {
             oldCuriosity.setTitle(newCuriosity.getTitle());
             oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
-            curiosityRepository.save(oldCuriosity);
-            return 1;
+            return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(oldCuriosity));
         }
-
-        return - 1;
+        return null;
     }
 
 }
