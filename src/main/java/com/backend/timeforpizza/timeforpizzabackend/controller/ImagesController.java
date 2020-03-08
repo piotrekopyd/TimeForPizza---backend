@@ -1,8 +1,6 @@
-package com.backend.timeforpizza.timeforpizzabackend.controllers;
+package com.backend.timeforpizza.timeforpizzabackend.controller;
 
 import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
-import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
-import com.backend.timeforpizza.timeforpizzabackend.service.GoogleCloudStorageService;
 import com.backend.timeforpizza.timeforpizzabackend.service.ImagesService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;

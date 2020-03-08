@@ -1,4 +1,4 @@
-package com.backend.timeforpizza.timeforpizzabackend.controllers;
+package com.backend.timeforpizza.timeforpizzabackend.controller;
 
 import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
@@ -7,7 +7,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
