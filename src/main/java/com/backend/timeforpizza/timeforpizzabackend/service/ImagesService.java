@@ -32,14 +32,23 @@ public class ImagesService {
     @Transactional
     public void uploadImages(Long recipeId, MultipartFile[] multipartFiles) {
         for (MultipartFile file: multipartFiles) {
-            try {
-                String path = imagesStorageService.uploadFile(file, recipeId);
-                Image image = saveImagePathToDatabase(recipeId, path);
-                System.out.println("");
-            } catch (IOException e) {
-                System.out.println(e.getMessage());
-            }
+            new Thread(() -> {
+                try {
+                    String path = imagesStorageService.uploadFile(file, recipeId);
+                    saveImagePathToDatabase(recipeId, path);
+                } catch (IOException e) {
+                    System.out.println(e.getMessage());
+                }
+            }).start();
         }
+//        for (MultipartFile file: multipartFiles) {
+//            try {
+//                String path = imagesStorageService.uploadFile(file, recipeId);
+//                saveImagePathToDatabase(recipeId, path);
+//            } catch (IOException e) {
+//                System.out.println(e.getMessage());
+//            }
+//        }
     }
 
     private Image saveImagePathToDatabase(Long recipeId, String path) {
