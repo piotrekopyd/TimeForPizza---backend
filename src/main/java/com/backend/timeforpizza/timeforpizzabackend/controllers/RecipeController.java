@@ -40,13 +40,8 @@ public class RecipeController {
     }
 
     @PostMapping
-    public boolean addRecipe(@Valid @NotNull @RequestBody RecipeRequest recipe) {
-        return recipeService.addRecipe(recipe) > 0;
-    }
-
-    @PostMapping(path = "/{recipeId}/comments")
-    public boolean addComment(@Valid @NotNull @RequestBody CommentRequest commentRequest, @PathVariable("recipeId") Long recipeId) {
-        return recipeService.addComment(commentRequest, recipeId) > 0;
+    public RecipeResponse addRecipe(@Valid @NotNull @RequestBody RecipeRequest recipe) {
+        return recipeService.addRecipe(recipe);
     }
 
     @PutMapping(path = "{id}")

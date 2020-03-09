@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientRequest;
@@ -22,56 +23,44 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public int addIngredient(IngredientRequest ingredientRequest) {
-        return ingredientRepository.save(ModelMapper.mapIngredientRequestToIngredient(ingredientRequest)) != null ? 1 : -1;
+    public IngredientResponse addIngredient(IngredientRequest ingredientRequest) {
+        Ingredient ingredient = ModelMapper.mapIngredientRequestToIngredient(ingredientRequest);
+        return ModelMapper.mapIngredientToIngredientResponse(ingredientRepository.save(ingredient));
     }
 
-    public int addAllIngredients(List<IngredientRequest> ingredientsRequests, Recipe recipe) {
-        List<Ingredient> ingredients = ingredientsRequests.stream()
-                .map(ModelMapper::mapIngredientRequestToIngredient)
-                .collect(Collectors.toList());
-        ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
-        return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
-    }
-
-    public int addAllIngredients(List<IngredientRequest> ingredientRequests) {
+    public List<IngredientResponse> addAllIngredients(List<IngredientRequest> ingredientRequests) {
         List<Ingredient> ingredients = ingredientRequests.stream()
                 .map(ModelMapper::mapIngredientRequestToIngredient)
                 .collect(Collectors.toList());
 
-        return ingredientRepository.saveAll(ingredients) != null ? 1 : -1;
+        return ingredientRepository.saveAll(ingredients).stream()
+                .map(ModelMapper::mapIngredientToIngredientResponse)
+                .collect(Collectors.toList());
     }
 
-    public List<IngredientResponse> getIngredientsByRecipe(Recipe recipe) {
-        return ingredientRepository.findByRecipe(recipe).stream()
-            .map(ModelMapper::mapIngredientToIngredientResponse)
-            .collect(Collectors.toList());
-    }
-
-    public void deleteIngredient(Ingredient ingredient) {
-        ingredientRepository.delete(ingredient);
+    public List<IngredientResponse> getIngredientsByRecipeId(Long recipeId) {
+        return ingredientRepository.findAllByRecipeRecipeId(recipeId).stream()
+                .map(ModelMapper::mapIngredientToIngredientResponse)
+                .collect(Collectors.toList());
     }
 
     public void deleteIngredientById(Long ingredientId) {
         ingredientRepository.deleteById(ingredientId);
     }
 
-    public void deleteIngredientsByRecipe(Recipe recipe) {
-        ingredientRepository.deleteByRecipe(recipe);
+    public void deleteAllIngredientsByRecipeId(Long recipeId) {
+        ingredientRepository.deleteAllByRecipeRecipeId(recipeId);
     }
 
-    public int updateIngredient(Ingredient newIngredient) {
-        Ingredient oldIngredient = ingredientRepository.findById(newIngredient.getIngredientId())
-                .orElse(null);
-        if (oldIngredient != null) {
-            oldIngredient.setAmount(newIngredient.getAmount());
-            oldIngredient.setName(newIngredient.getName());
-            oldIngredient.setRecipe(newIngredient.getRecipe());
-            oldIngredient.setUnit(newIngredient.getUnit());
-            ingredientRepository.save(oldIngredient);
-            return 1;
-        }
-        return -1;
+    public IngredientResponse updateIngredient(Long ingredientId, IngredientRequest newIngredient) {
+        Ingredient oldIngredient = ingredientRepository.findById(ingredientId)
+                .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
+
+        oldIngredient.setAmount(newIngredient.getAmount());
+        oldIngredient.setName(newIngredient.getName());
+        oldIngredient.setRecipe(newIngredient.getRecipe());
+        oldIngredient.setUnit(newIngredient.getUnit());
+        return ModelMapper.mapIngredientToIngredientResponse(ingredientRepository.save(oldIngredient));
     }
 
 }
