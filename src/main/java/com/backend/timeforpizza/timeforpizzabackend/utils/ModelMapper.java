@@ -2,6 +2,7 @@ package com.backend.timeforpizza.timeforpizzabackend.utils;
 
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
+import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.*;
@@ -90,5 +91,13 @@ public class ModelMapper {
         recipeResponse.setIngredients(ingredientResponseList);
 
         return recipeResponse;
+    }
+
+    public static CuriosityResponse mapCuriosityToCuriosityResponse(Curiosity curiosity) {
+        return  new CuriosityResponse(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity());
+    }
+
+    public static Curiosity mapCuriosityRequestToCuriosity(CuriosityRequest curiosityRequest) {
+        return new Curiosity(curiosityRequest.getTitle(), curiosityRequest.getCuriosity());
     }
 }

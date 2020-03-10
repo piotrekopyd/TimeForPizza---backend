@@ -21,9 +21,8 @@ public class CuriosityController {
     }
 
     @PostMapping
-    public boolean addCuriosity(@Valid @NotNull @RequestBody CuriosityRequest curiosity) {
-        curiosityService.addCuriosity(curiosity);
-        return true;
+    public CuriosityResponse addCuriosity(@Valid @NotNull @RequestBody CuriosityRequest curiosity) {
+       return curiosityService.addCuriosity(curiosity);
     }
 
     @GetMapping

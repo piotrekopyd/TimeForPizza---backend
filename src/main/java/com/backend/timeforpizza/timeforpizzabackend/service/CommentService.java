@@ -9,6 +9,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import javax.validation.constraints.Null;
+
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
@@ -18,13 +20,13 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public int addComment(CommentRequest commentRequest) {
+    public CommentResponse addComment(CommentRequest commentRequest) {
         Comment comment = ModelMapper.mapCommentRequestToComment(commentRequest);
-        return commentRepository.save(comment) != null ? 1 : -1;
+        return ModelMapper.mapCommentToCommentResponse(commentRepository.save(comment));
     }
 
-    public int addComment(Comment comment) {
-        return commentRepository.save(comment) != null ? 1 : -1;
+    Comment addComment(Comment comment) {
+        return commentRepository.save(comment);
     }
 
     public CommentResponse getCommentById(Long id) {
@@ -37,15 +39,15 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    public int updateComment(CommentRequest newComment, Long commentId) {
+    @Null
+    public CommentResponse updateComment(CommentRequest newComment, Long commentId) {
         Comment oldComment = commentRepository.findById(commentId)
                 .orElse(null);
         if(oldComment != null) {
             oldComment.setComment(newComment.getComment());
             oldComment.setNickname(newComment.getNickname());
-            commentRepository.save(oldComment);
-            return 1;
+            return ModelMapper.mapCommentToCommentResponse(commentRepository.save(oldComment));
         }
-        return -1;
+        return null;
     }
 }

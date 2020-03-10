@@ -27,31 +27,14 @@ public class RecipeService {
         this.commentService = commentService;
     }
 
-    public int addRecipe(RecipeRequest recipeRequest) {
+    public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = ModelMapper.mapRecipeRequestToRecipe(recipeRequest);
-        if (recipeRepository.save(recipe) != null) {
-            List<IngredientRequest> ingredientRequests = recipeRequest.getIngredients();
-            ingredientRequests.forEach(ingredientRequest -> ingredientRequest.setRecipe(recipe));
+        recipeRepository.save(recipe);
 
-            if (ingredientService.addAllIngredients(ingredientRequests) > 0) {
-                return 1;
-            }
-        }
-
-        return -1;
-    }
-
-    public int addComment(CommentRequest commentRequest, Long recipeId) {
-        Recipe recipe = recipeRepository.findById(recipeId)
-                .orElse(null);
-
-        if(recipe != null) {
-            Comment comment = ModelMapper.mapCommentRequestToComment(commentRequest);
-            comment.setRecipe(recipe);
-            commentService.addComment(comment);
-            return 1;
-        }
-        return -1;
+        List<IngredientRequest> ingredientRequests = recipeRequest.getIngredients();
+        ingredientRequests.forEach(ingredientRequest -> ingredientRequest.setRecipe(recipe));
+        ingredientService.addAllIngredients(ingredientRequests);
+        return ModelMapper.mapRecipeToRecipeResponse(recipe);
     }
 
     public RecipeResponse getRecipeById(Long id) {

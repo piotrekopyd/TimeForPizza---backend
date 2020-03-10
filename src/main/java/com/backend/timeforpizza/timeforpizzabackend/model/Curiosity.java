@@ -36,4 +36,9 @@ public class Curiosity {
     }
 
     public Curiosity(){}
+
+    public Curiosity(String title, String curiosity) {
+        this.title = title;
+        this.curiosity = curiosity;
+    }
 }
