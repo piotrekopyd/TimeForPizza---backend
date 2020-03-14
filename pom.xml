@@ -67,10 +67,6 @@
             <groupId>com.google.cloud</groupId>
             <artifactId>google-cloud-storage</artifactId>
         </dependency>
-        <!--<dependency>-->
-            <!--<groupId>org.springframework.cloud</groupId>-->
-            <!--<artifactId>spring-cloud-gcp-starter</artifactId>-->
-        <!--</dependency>-->
 
         <dependency>
             <groupId>org.springframework.boot</groupId>
@@ -83,6 +79,15 @@
                 </exclusion>
             </exclusions>
         </dependency>
+
+        <!--TEST-->
+
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.196</version>
+            <scope>test</scope>
+        </dependency>
     </dependencies>
 
     <build>
@@ -93,5 +98,27 @@
             </plugin>
         </plugins>
     </build>
+
+    <profiles>
+        <profile>
+            <id>dev</id>
+            <activation>
+                <activeByDefault>true</activeByDefault>
+            </activation>
+            <properties>
+                <database.url>jdbc:mysql://localhost:3306/timeforpizza</database.url>
+                <database.username>root</database.username>
+                <database.password>likopkii</database.password>
+            </properties>
+        </profile>
+        <profile>
+            <id>test</id>
+            <properties>
+                <database.url>jdbc:mysql://localhost:3306/TEST_BAZA_SIEMA_LOLx2</database.url>
+                <database.username>root</database.username>
+                <database.password>likopkii</database.password>
+            </properties>
+        </profile>
+    </profiles>
 
 </project>

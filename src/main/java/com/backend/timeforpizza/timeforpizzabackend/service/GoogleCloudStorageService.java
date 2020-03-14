@@ -57,6 +57,10 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
         return buildImagePath(blob.getName());
     }
 
+    public void deleteAllFilesWithPrefix(String prefix) {
+
+    }
+
     public void deleteFile(Long recipeId, String objectName) {
         String fileName = recipeId + "/" + objectName;
         storage.delete(bucketName, fileName);
