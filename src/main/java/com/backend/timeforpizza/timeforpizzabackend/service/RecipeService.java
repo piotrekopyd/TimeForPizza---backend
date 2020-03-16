@@ -9,7 +9,9 @@ import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -18,13 +20,22 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
+    private final ImagesService imagesService;
     private final CommentService commentService;
 
     @Autowired
-    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService) {
+    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService
+                         ,ImagesService imagesService
+    ) {
         this.recipeRepository = recipeRepository;
         this.ingredientService = ingredientService;
         this.commentService = commentService;
+        this.imagesService = imagesService;
+    }
+
+    @PostConstruct
+    private void setRecipeInImagesService() {
+        imagesService.setRecipeService(this);
     }
 
     public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
@@ -93,5 +104,13 @@ public class RecipeService {
             return 1;
         }
         return -1;
+    }
+
+    @Transactional
+    public void deleteRecipe(Long recipeId) {
+        commentService.deleteAllCommentsByRecipeId(recipeId);
+        ingredientService.deleteAllIngredientsByRecipeId(recipeId);
+        imagesService.deleteAllImagesByRecipeId(recipeId);
+        recipeRepository.deleteById(recipeId);
     }
 }

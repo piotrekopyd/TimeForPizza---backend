@@ -46,7 +46,8 @@ public class Image {
         this.recipe = recipe;
     }
 
-    public Image(String url) {
+    public Image(String imageName, String url) {
+        this.imageName = imageName;
         this.url = url;
     }
 

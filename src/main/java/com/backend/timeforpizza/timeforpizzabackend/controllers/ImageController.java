@@ -1,8 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.controllers;
 
 import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
-import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
-import com.backend.timeforpizza.timeforpizzabackend.service.GoogleCloudStorageService;
 import com.backend.timeforpizza.timeforpizzabackend.service.ImagesService;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -12,11 +10,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping(path = "/images")
-public class ImagesController {
-
+public class ImageController {
     private ImagesService imagesService;
 
-    public ImagesController(ImagesService imagesService) {
+    public ImageController(ImagesService imagesService) {
         this.imagesService = imagesService;
     }
 

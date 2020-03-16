@@ -7,6 +7,7 @@ import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
 
 import javax.validation.constraints.Null;
@@ -39,7 +40,11 @@ public class CommentService {
         commentRepository.deleteById(commentId);
     }
 
-    @Null
+    public void deleteAllCommentsByRecipeId(Long recipeId) {
+        commentRepository.deleteAllByRecipeRecipeId(recipeId);
+    }
+
+    @Nullable
     public CommentResponse updateComment(CommentRequest newComment, Long commentId) {
         Comment oldComment = commentRepository.findById(commentId)
                 .orElse(null);

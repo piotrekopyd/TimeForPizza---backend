@@ -49,4 +49,8 @@ public class RecipeController {
         return recipeService.updateRecipe(recipeRequest, id) > 0;
     }
 
+    @DeleteMapping(path = "{id}")
+    public void deleteRecipe(@PathVariable("id") Long recipeId) {
+        recipeService.deleteRecipe(recipeId);
+    }
 }

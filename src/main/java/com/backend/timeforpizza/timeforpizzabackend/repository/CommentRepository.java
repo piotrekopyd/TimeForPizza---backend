@@ -10,4 +10,5 @@ import org.springframework.stereotype.Repository;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
     Iterable<Comment> findByRecipe(Recipe recipe);
     void deleteByRecipe(Recipe recipe);
+    void deleteAllByRecipeRecipeId(Long recipeId);
 }
