@@ -16,7 +16,6 @@ public class ModelMapper {
         Comment comment = new Comment();
         comment.setNickname(request.getNickname());
         comment.setComment(request.getComment());
-        comment.setRecipe(request.getRecipe());
 
         return comment;
     }
@@ -35,7 +34,6 @@ public class ModelMapper {
         ingredient.setName(ingredientRequest.getName());
         ingredient.setAmount(ingredientRequest.getAmount());
         ingredient.setUnit(ingredientRequest.getUnit());
-        ingredient.setRecipe(ingredientRequest.getRecipe());
 
         return ingredient;
     }

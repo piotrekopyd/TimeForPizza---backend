@@ -1,6 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
-import com.backend.timeforpizza.timeforpizzabackend.repository.ImagesStorageRepository;
+import com.backend.timeforpizza.timeforpizzabackend.repository.ImageStorageRepository;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -14,7 +14,7 @@ import java.io.IOException;
 
 @Service("googleCloudStorage")
 @Qualifier("googleCloudStorage")
-public class GoogleCloudStorageService implements ImagesStorageRepository {
+public class GoogleCloudStorageService implements ImageStorageRepository {
 
     @Value("${google.cloud.storage.project.id}")
     private String projectId;
@@ -49,8 +49,7 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
     }
 
     public String uploadFile(MultipartFile file, Long recipeId) throws IOException {
-
-        String fileName = file.getOriginalFilename() != null ? recipeId + "/" + file.getOriginalFilename() : "";
+        String fileName = file.getOriginalFilename() != null ? recipeId + "/" + file.getOriginalFilename().replaceAll(" ", "_") : "";
         BlobId blobId = BlobId.of(this.bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
         Blob blob = storage.create(blobInfo, file.getBytes());
@@ -64,6 +63,25 @@ public class GoogleCloudStorageService implements ImagesStorageRepository {
     public void deleteFile(Long recipeId, String objectName) {
         String fileName = recipeId + "/" + objectName;
         storage.delete(bucketName, fileName);
+    }
+
+    public Boolean deleteAllFilesByRecipeId(Long recipeId) {
+        Iterable<Blob> blobs = listOfObjectsWithPrefix(recipeId + "/");
+        boolean deleted = false;
+
+        for(Blob blob: blobs) {
+            deleted = blob.delete();
+        }
+        return deleted;
+    }
+
+    public Iterable<Blob> listOfObjectsWithPrefix(String prefix) {
+        Bucket bucket = storage.get(bucketName);
+
+        return bucket.list(
+                        Storage.BlobListOption.prefix(prefix),
+                        Storage.BlobListOption.currentDirectory()
+                ).iterateAll();
     }
 
     private String buildImagePath(String fileName) {

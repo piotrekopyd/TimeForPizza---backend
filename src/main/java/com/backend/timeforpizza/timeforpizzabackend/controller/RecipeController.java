@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.NotNull;
 import java.util.List;
 
@@ -24,8 +25,8 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
-    @GetMapping(path = "{id}")
-    public RecipeResponse getRecipeById(@PathVariable("id") Long id) {
+    @GetMapping(path = "{recipeId}")
+    public RecipeResponse getRecipeById(@PathVariable("recipeId") Long id) {
         return recipeService.getRecipeById(id);
     }
 
@@ -44,9 +45,23 @@ public class RecipeController {
         return recipeService.addRecipe(recipe);
     }
 
-    @PutMapping(path = "{id}")
-    public boolean updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable Long id) {
-        return recipeService.updateRecipe(recipeRequest, id) > 0;
+    @PostMapping(path = "/{recipeId}/comments")
+    public CommentResponse addComment(@PathVariable("recipeId") Long recipeId, @NotBlank @RequestBody CommentRequest commentRequest) {
+        return recipeService.addComment(recipeId, commentRequest);
     }
 
+    @PostMapping(path = "/{recipeId}/ingredients")
+    public IngredientResponse addIngredient(@PathVariable("recipeId") Long recipeId, @NotBlank @RequestBody IngredientRequest ingredientRequest) {
+        return recipeService.addIngredient(recipeId, ingredientRequest);
+    }
+
+    @PutMapping(path = "{recipeId}")
+    public RecipeResponse updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable("recipeId") Long id) {
+        return recipeService.updateRecipe(recipeRequest, id);
+    }
+
+    @DeleteMapping(path = "{id}")
+    public void deleteRecipe(@PathVariable("id") Long recipeId) {
+        recipeService.deleteRecipe(recipeId);
+    }
 }

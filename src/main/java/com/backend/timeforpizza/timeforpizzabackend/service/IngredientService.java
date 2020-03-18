@@ -19,19 +19,21 @@ public class IngredientService {
     private final IngredientRepository ingredientRepository;
 
     @Autowired
-    public IngredientService(@Qualifier("ingredientRepository") IngredientRepository ingredientRepository) {
+    public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }
 
-    public IngredientResponse addIngredient(IngredientRequest ingredientRequest) {
+    IngredientResponse addIngredient(IngredientRequest ingredientRequest, Recipe recipe) {
         Ingredient ingredient = ModelMapper.mapIngredientRequestToIngredient(ingredientRequest);
+        ingredient.setRecipe(recipe);
         return ModelMapper.mapIngredientToIngredientResponse(ingredientRepository.save(ingredient));
     }
 
-    public List<IngredientResponse> addAllIngredients(List<IngredientRequest> ingredientRequests) {
+    public List<IngredientResponse> addAllIngredients(List<IngredientRequest> ingredientRequests, Recipe recipe) {
         List<Ingredient> ingredients = ingredientRequests.stream()
                 .map(ModelMapper::mapIngredientRequestToIngredient)
                 .collect(Collectors.toList());
+        ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
 
         return ingredientRepository.saveAll(ingredients).stream()
                 .map(ModelMapper::mapIngredientToIngredientResponse)
@@ -58,7 +60,6 @@ public class IngredientService {
 
         oldIngredient.setAmount(newIngredient.getAmount());
         oldIngredient.setName(newIngredient.getName());
-        oldIngredient.setRecipe(newIngredient.getRecipe());
         oldIngredient.setUnit(newIngredient.getUnit());
         return ModelMapper.mapIngredientToIngredientResponse(ingredientRepository.save(oldIngredient));
     }

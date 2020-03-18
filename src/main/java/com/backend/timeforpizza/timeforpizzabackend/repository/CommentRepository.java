@@ -6,8 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
 
-@Repository("commentRepository")
+@Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Iterable<Comment> findByRecipe(Recipe recipe);
-    void deleteByRecipe(Recipe recipe);
+    Iterable<Comment> findByRecipeRecipeId(Long recipeId);
+    void deleteAllByRecipeRecipeId(Long recipeId);
 }

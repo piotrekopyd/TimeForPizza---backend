@@ -7,7 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository("ingredientRepository")
+@Repository
 public interface IngredientRepository extends JpaRepository<Ingredient, Long> {
     List<Ingredient> findAllByRecipeRecipeId(Long recipeId);
     void deleteAllByRecipeRecipeId(Long recipeId);

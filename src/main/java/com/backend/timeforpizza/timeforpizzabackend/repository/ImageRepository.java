@@ -7,8 +7,9 @@ import org.springframework.stereotype.Repository;
 
 import java.util.Optional;
 
-@Repository("imagesRepository")
-public interface ImagesRepository extends JpaRepository<Image, Long> {
+@Repository
+public interface ImageRepository extends JpaRepository<Image, Long> {
     Optional<Image> findByUrlAndRecipe(String url, Recipe recipe);
     Boolean existsByUrlAndRecipe(String url, Recipe recipe);
+    void deleteAllByRecipeRecipeId(Long recipeId);
 }
