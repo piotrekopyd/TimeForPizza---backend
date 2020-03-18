@@ -45,8 +45,7 @@ public class RecipeService {
         recipeRepository.save(recipe);
 
         List<IngredientRequest> ingredientRequests = recipeRequest.getIngredients();
-        ingredientRequests.forEach(ingredientRequest -> ingredientRequest.setRecipe(recipe));
-        ingredientService.addAllIngredients(ingredientRequests);
+        ingredientService.addAllIngredients(ingredientRequests, recipe);
         return ModelMapper.mapRecipeToRecipeResponse(recipe);
     }
 
@@ -94,6 +93,10 @@ public class RecipeService {
     }
 
     /** Ingredients */
+    public IngredientResponse addIngredient(Long recipeId, IngredientRequest ingredientRequest) {
+        Recipe recipe = getRecipe(recipeId);
+        return ingredientService.addIngredient(ingredientRequest, recipe);
+    }
     public List<IngredientResponse> getAllIngredientsByRecipeId(Long recipeId) {
         RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
                 .map(ModelMapper::mapRecipeToRecipeResponse)

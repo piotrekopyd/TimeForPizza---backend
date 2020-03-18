@@ -34,7 +34,6 @@ public class ModelMapper {
         ingredient.setName(ingredientRequest.getName());
         ingredient.setAmount(ingredientRequest.getAmount());
         ingredient.setUnit(ingredientRequest.getUnit());
-        ingredient.setRecipe(ingredientRequest.getRecipe());
 
         return ingredient;
     }

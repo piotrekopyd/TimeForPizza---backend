@@ -49,6 +49,11 @@ public class RecipeController {
         return recipeService.addComment(recipeId, commentRequest);
     }
 
+    @PostMapping(path = "/{recipeId}/ingredients")
+    public IngredientResponse addIngredient(@PathVariable("recipeId") Long recipeId, @RequestBody IngredientRequest ingredientRequest) {
+        return recipeService.addIngredient(recipeId, ingredientRequest);
+    }
+
     @PutMapping(path = "{id}")
     public boolean updateRecipe(@Valid @NotNull @RequestBody RecipeRequest recipeRequest, @PathVariable Long id) {
         return recipeService.updateRecipe(recipeRequest, id) > 0;
