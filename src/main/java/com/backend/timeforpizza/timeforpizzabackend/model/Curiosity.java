@@ -41,4 +41,10 @@ public class Curiosity {
         this.title = title;
         this.curiosity = curiosity;
     }
+
+    public Curiosity(Long curiosityId, String title, String curiosity) {
+        this.curiosityId = curiosityId;
+        this.title = title;
+        this.curiosity = curiosity;
+    }
 }

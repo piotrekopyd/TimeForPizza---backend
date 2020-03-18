@@ -20,7 +20,7 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping(path = "/all")
+    @GetMapping
     public List<RecipeResponse> getAllRecipes() {
         return recipeService.getAllRecipes();
     }

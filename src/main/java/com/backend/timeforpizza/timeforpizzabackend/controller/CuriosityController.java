@@ -35,14 +35,13 @@ public class CuriosityController {
         return curiosityService.getCuriosityById(id);
     }
 
+    @PatchMapping(path = "{id}")
+    public CuriosityResponse updateCuriosity(@Valid @NotNull @RequestBody CuriosityRequest newCuriosity, @PathVariable Long id) {
+        return curiosityService.updateCuriosity(id, newCuriosity);
+    }
+
     @DeleteMapping(path = "{id}")
     public void deleteCuriosityById(@PathVariable("id") Long id) {
         curiosityService.deleteCuriosityById(id);
     }
-
-    @PutMapping(path = "{id}")
-    public void updateCuriosity(@Valid @NotNull @RequestBody CuriosityRequest newCuriosity, @PathVariable Long id) {
-        curiosityService.updateCuriosity(id, newCuriosity);
-    }
-
 }

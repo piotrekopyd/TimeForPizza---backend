@@ -1,4 +1,4 @@
-package com.backend.timeforpizza.timeforpizzabackend.controllers;
+package com.backend.timeforpizza.timeforpizzabackend.controller;
 
 import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
 import com.backend.timeforpizza.timeforpizzabackend.service.ImagesService;

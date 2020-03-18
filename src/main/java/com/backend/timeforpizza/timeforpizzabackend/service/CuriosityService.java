@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
@@ -43,7 +44,12 @@ public class CuriosityService {
     public CuriosityResponse getCuriosityById(Long id) {
         return  curiosityRepository.findById(id)
                 .map(c -> new CuriosityResponse(c.getCuriosityId(), c.getTitle(), c.getCuriosity()))
-                .orElse(null);
+                .orElseThrow( () -> new ResourceNotFoundException("Curiosity", "curiosityId", id));
+    }
+
+    Curiosity getCuriosity(Long curiosityId) {
+        return  curiosityRepository.findById(curiosityId)
+                .orElseThrow( () -> new ResourceNotFoundException("Curiosity", "curiosityId", curiosityId));
     }
 
     public void deleteCuriosityById(Long id) {
@@ -51,14 +57,10 @@ public class CuriosityService {
     }
 
     public CuriosityResponse updateCuriosity(Long id, CuriosityRequest newCuriosity) {
-        Curiosity oldCuriosity = curiosityRepository.findById(id)
-                .orElse(null);
-        if (oldCuriosity != null) {
-            oldCuriosity.setTitle(newCuriosity.getTitle());
-            oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
-            return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(oldCuriosity));
-        }
-        return null;
+        Curiosity oldCuriosity = getCuriosity(id);
+        oldCuriosity.setTitle(newCuriosity.getTitle());
+        oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
+        return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(oldCuriosity));
     }
 
 }
