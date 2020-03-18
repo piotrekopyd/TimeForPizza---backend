@@ -50,7 +50,6 @@ public class GoogleCloudStorageService implements ImageStorageRepository {
     }
 
     public String uploadFile(MultipartFile file, Long recipeId) throws IOException {
-//        String filename = file.getOriginalFilename().replaceAll(" ", "_");
         String fileName = file.getOriginalFilename() != null ? recipeId + "/" + file.getOriginalFilename().replaceAll(" ", "_") : "";
         BlobId blobId = BlobId.of(this.bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();

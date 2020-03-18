@@ -1,6 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
+import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CommentRequest;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository;
@@ -21,8 +22,9 @@ public class CommentService {
         this.commentRepository = commentRepository;
     }
 
-    public CommentResponse addComment(CommentRequest commentRequest) {
+    CommentResponse addComment(CommentRequest commentRequest, Recipe recipe) {
         Comment comment = ModelMapper.mapCommentRequestToComment(commentRequest);
+        comment.setRecipe(recipe);
         return ModelMapper.mapCommentToCommentResponse(commentRepository.save(comment));
     }
 

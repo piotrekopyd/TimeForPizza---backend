@@ -23,7 +23,7 @@ public class IngredientController {
     }
 
 //    @PostMapping
-//    public void addIngredient(@Valid @NotNull @RequestBody IngredientRequest ingredientRequest, @RequestParam(value = "recipeId") Long recipeId) {
-//
-//    }
+////    public void addIngredient(@Valid @NotNull @RequestBody IngredientRequest ingredientRequest, @RequestParam(value = "recipeId") Long recipeId) {
+////
+////    }
 }

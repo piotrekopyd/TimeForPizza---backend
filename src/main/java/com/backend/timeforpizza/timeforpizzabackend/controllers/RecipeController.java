@@ -24,8 +24,8 @@ public class RecipeController {
         return recipeService.getAllRecipes();
     }
 
-    @GetMapping(path = "{id}")
-    public RecipeResponse getRecipeById(@PathVariable("id") Long id) {
+    @GetMapping(path = "{recipeId}")
+    public RecipeResponse getRecipeById(@PathVariable("recipeId") Long id) {
         return recipeService.getRecipeById(id);
     }
 
@@ -42,6 +42,11 @@ public class RecipeController {
     @PostMapping
     public RecipeResponse addRecipe(@Valid @NotNull @RequestBody RecipeRequest recipe) {
         return recipeService.addRecipe(recipe);
+    }
+
+    @PostMapping(path = "/{recipeId}/comments")
+    public CommentResponse addComment(@PathVariable("recipeId") Long recipeId, @RequestBody CommentRequest commentRequest) {
+        return recipeService.addComment(recipeId, commentRequest);
     }
 
     @PutMapping(path = "{id}")

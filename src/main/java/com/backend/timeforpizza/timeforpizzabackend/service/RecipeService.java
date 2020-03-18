@@ -1,11 +1,11 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
-import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.*;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
+import com.google.j2objc.annotations.LoopTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -38,6 +38,8 @@ public class RecipeService {
         imagesService.setRecipeService(this);
     }
 
+    /** Recipes */
+    @Transactional
     public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
         Recipe recipe = ModelMapper.mapRecipeRequestToRecipe(recipeRequest);
         recipeRepository.save(recipe);
@@ -65,30 +67,7 @@ public class RecipeService {
                     .collect(Collectors.toList());
     }
 
-    public List<CommentResponse> getAllCommentsByRecipeId(Long recipeId) {
-        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
-                .map(ModelMapper::mapRecipeToRecipeResponse)
-                .orElse(null);
-
-        if(recipeResponse != null) {
-            return recipeResponse.getComments();
-        }
-
-        return new ArrayList<>();
-    }
-
-    public List<IngredientResponse> getAllIngredientsByRecipeId(Long recipeId) {
-        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
-                .map(ModelMapper::mapRecipeToRecipeResponse)
-                .orElse(null);
-
-        if(recipeResponse != null) {
-            return recipeResponse.getIngredients();
-        }
-
-        return new ArrayList<>();
-    }
-
+    @Transactional
     public int updateRecipe(RecipeRequest recipeRequest, Long recipeId) {
         Recipe oldRecipe = recipeRepository.findById(recipeId)
                 .orElse(null);
@@ -112,5 +91,40 @@ public class RecipeService {
         ingredientService.deleteAllIngredientsByRecipeId(recipeId);
         imagesService.deleteAllImagesByRecipeId(recipeId);
         recipeRepository.deleteById(recipeId);
+    }
+
+    /** Ingredients */
+    public List<IngredientResponse> getAllIngredientsByRecipeId(Long recipeId) {
+        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
+                .map(ModelMapper::mapRecipeToRecipeResponse)
+                .orElse(null);
+
+        if(recipeResponse != null) {
+            return recipeResponse.getIngredients();
+        }
+
+        return new ArrayList<>();
+    }
+
+    /** Comments */
+    public CommentResponse addComment(Long recipeId, CommentRequest commentRequest) {
+        Recipe recipe = getRecipe(recipeId);
+        return commentService.addComment(commentRequest, recipe);
+    }
+
+    public void deleteComment(Long commentId) {
+        commentService.deleteCommentById(commentId);
+    }
+
+    public List<CommentResponse> getAllCommentsByRecipeId(Long recipeId) {
+        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
+                .map(ModelMapper::mapRecipeToRecipeResponse)
+                .orElse(null);
+
+        if(recipeResponse != null) {
+            return recipeResponse.getComments();
+        }
+
+        return new ArrayList<>();
     }
 }

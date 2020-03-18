@@ -16,7 +16,6 @@ public class ModelMapper {
         Comment comment = new Comment();
         comment.setNickname(request.getNickname());
         comment.setComment(request.getComment());
-        comment.setRecipe(request.getRecipe());
 
         return comment;
     }
