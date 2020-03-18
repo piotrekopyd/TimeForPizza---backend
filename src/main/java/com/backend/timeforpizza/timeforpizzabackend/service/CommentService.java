@@ -7,18 +7,15 @@ import com.backend.timeforpizza.timeforpizzabackend.payload.CommentResponse;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CommentRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
-
-import javax.validation.constraints.Null;
 
 @Service
 public class CommentService {
     private final CommentRepository commentRepository;
 
     @Autowired
-    public CommentService(@Qualifier("commentRepository") CommentRepository commentRepository) {
+    public CommentService(CommentRepository commentRepository) {
         this.commentRepository = commentRepository;
     }
 
@@ -47,12 +44,12 @@ public class CommentService {
     }
 
     @Nullable
-    public CommentResponse updateComment(CommentRequest newComment, Long commentId) {
+    public CommentResponse updateComment(CommentRequest commentRequest, Long commentId) {
         Comment oldComment = commentRepository.findById(commentId)
                 .orElse(null);
         if(oldComment != null) {
-            oldComment.setComment(newComment.getComment());
-            oldComment.setNickname(newComment.getNickname());
+            oldComment.setComment(commentRequest.getComment());
+            oldComment.setNickname(commentRequest.getNickname());
             return ModelMapper.mapCommentToCommentResponse(commentRepository.save(oldComment));
         }
         return null;

@@ -19,7 +19,7 @@ public class IngredientService {
     private final IngredientRepository ingredientRepository;
 
     @Autowired
-    public IngredientService(@Qualifier("ingredientRepository") IngredientRepository ingredientRepository) {
+    public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
     }
 

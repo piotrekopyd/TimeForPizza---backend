@@ -1,13 +1,12 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.*;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
-import com.google.j2objc.annotations.LoopTranslation;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -24,7 +23,7 @@ public class RecipeService {
     private final CommentService commentService;
 
     @Autowired
-    public RecipeService(@Qualifier("recipeRepository") RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService
+    public RecipeService(RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService
                          ,ImagesService imagesService
     ) {
         this.recipeRepository = recipeRepository;
@@ -52,12 +51,12 @@ public class RecipeService {
     public RecipeResponse getRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
     }
 
     Recipe getRecipe(Long id) {
         return recipeRepository.findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
     }
 
     public List<RecipeResponse> getAllRecipes() {
@@ -67,21 +66,17 @@ public class RecipeService {
     }
 
     @Transactional
-    public int updateRecipe(RecipeRequest recipeRequest, Long recipeId) {
-        Recipe oldRecipe = recipeRepository.findById(recipeId)
-                .orElse(null);
-        if(oldRecipe != null) {
-            List<Ingredient> newIngredients = recipeRequest.getIngredients().stream()
-                    .map(ModelMapper::mapIngredientRequestToIngredient)
-                    .collect(Collectors.toList());
-            newIngredients.forEach(ingredient -> ingredient.setRecipe(oldRecipe));
-            oldRecipe.setIngredients(newIngredients);
-            oldRecipe.setPreparation(recipeRequest.getPreparation());
-            oldRecipe.setName(recipeRequest.getName());
-            recipeRepository.save(oldRecipe);
-            return 1;
-        }
-        return -1;
+    public RecipeResponse updateRecipe(RecipeRequest recipeRequest, Long recipeId) {
+        Recipe oldRecipe = getRecipe(recipeId);
+
+        List<Ingredient> newIngredients = recipeRequest.getIngredients().stream()
+                .map(ModelMapper::mapIngredientRequestToIngredient)
+                .collect(Collectors.toList());
+        newIngredients.forEach(ingredient -> ingredient.setRecipe(oldRecipe));
+        oldRecipe.setIngredients(newIngredients);
+        oldRecipe.setPreparation(recipeRequest.getPreparation());
+        oldRecipe.setName(recipeRequest.getName());
+        return ModelMapper.mapRecipeToRecipeResponse(recipeRepository.save(oldRecipe));
     }
 
     @Transactional

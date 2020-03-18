@@ -6,7 +6,6 @@ import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityReposito
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,14 +16,14 @@ public class CuriosityService {
     private final CuriosityRepository curiosityRepository;
 
     @Autowired
-    public CuriosityService(@Qualifier("curiosityRepository") CuriosityRepository curiosityRepository) {
+    public CuriosityService(CuriosityRepository curiosityRepository) {
         this.curiosityRepository = curiosityRepository;
     }
 
-    public CuriosityResponse addCuriosity(CuriosityRequest curiosityToAdd) {
+    public CuriosityResponse addCuriosity(CuriosityRequest curiosityRequest) {
         Curiosity curiosity = new Curiosity();
-        curiosity.setCuriosity(curiosityToAdd.getCuriosity());
-        curiosity.setTitle(curiosityToAdd.getTitle());
+        curiosity.setCuriosity(curiosityRequest.getCuriosity());
+        curiosity.setTitle(curiosityRequest.getTitle());
 
         return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(curiosity));
     }

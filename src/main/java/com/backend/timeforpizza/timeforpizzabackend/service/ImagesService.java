@@ -24,7 +24,7 @@ public class ImagesService {
 
     private RecipeService recipeService;
 
-    ImagesService(@Qualifier("imageRepository") ImageRepository imageRepository, @Qualifier("googleCloudStorage") ImageStorageRepository imagesStorageService) {
+    ImagesService(ImageRepository imageRepository, @Qualifier("googleCloudStorage") ImageStorageRepository imagesStorageService) {
         this.imageRepository = imageRepository;
         this.imagesStorageService = imagesStorageService;
     }
