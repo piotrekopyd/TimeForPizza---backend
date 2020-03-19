@@ -18,7 +18,6 @@ import org.springframework.test.web.servlet.MockMvc;
 import java.util.List;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -50,7 +49,6 @@ public class RecipesIntegrationTests {
 
         // THEN
         mockMvc.perform(get("/curiosities"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
     }
@@ -69,7 +67,6 @@ public class RecipesIntegrationTests {
 
         // THEN
         mockMvc.perform(get("/curiosities/2"))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
     }
@@ -85,7 +82,6 @@ public class RecipesIntegrationTests {
         mockMvc.perform(patch("/curiosities/2")
                 .contentType("application/json")
                 .content(objectMapper.writeValueAsString(curiosityRequest)))
-                .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().json(objectMapper.writeValueAsString(expectedResponse)));
     }
