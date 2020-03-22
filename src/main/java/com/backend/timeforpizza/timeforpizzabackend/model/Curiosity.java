@@ -1,7 +1,10 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import lombok.Data;
+
 import javax.persistence.*;
 
+@Data
 @Entity
 @Table(name = "Curiosity")
 public class Curiosity {
@@ -14,26 +17,6 @@ public class Curiosity {
 
     @Column(name = "curiosity")
     private String curiosity;
-
-    public Long getCuriosityId() {
-        return curiosityId;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getCuriosity() {
-        return curiosity;
-    }
-
-    public void setCuriosity(String curiosity) {
-        this.curiosity = curiosity;
-    }
 
     public Curiosity(){}
 

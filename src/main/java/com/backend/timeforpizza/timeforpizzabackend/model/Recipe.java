@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import lombok.Data;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -8,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Data
 @Table(name = "Recipe")
 public class Recipe {
     @Id
@@ -32,58 +34,6 @@ public class Recipe {
     @OneToMany(fetch = FetchType.LAZY, mappedBy = "recipe", orphanRemoval = true)
     @Fetch(FetchMode.SELECT)
     private List<Comment> comments = new ArrayList<>();
-
-    public Long getRecipeId() {
-        return recipeId;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public String getPreparation() {
-        return preparation;
-    }
-
-    public void setPreparation(String preparation) {
-        this.preparation = preparation;
-    }
-
-    public List<Ingredient> getIngredients() {
-        return ingredients;
-    }
-
-    public void setIngredients(List<Ingredient> ingredients) {
-        this.ingredients = ingredients;
-    }
-
-    public String getMiniatureImageUrl() {
-        return miniatureImageUrl;
-    }
-
-    public void setMiniatureImageUrl(String miniatureImageUrl) {
-        this.miniatureImageUrl = miniatureImageUrl;
-    }
-
-    public List<Image> getImagesUrls() {
-        return imagesUrls;
-    }
-
-    public void setImagesUrls(List<Image> imagesUrls) {
-        this.imagesUrls = imagesUrls;
-    }
-
-    public List<Comment> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<Comment> comments) {
-        this.comments = comments;
-    }
 
     public Recipe() {}
 }

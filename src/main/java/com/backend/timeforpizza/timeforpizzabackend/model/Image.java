@@ -1,10 +1,12 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.Data;
 
 import javax.persistence.*;
 
 @Entity
+@Data
 public class Image {
     @Id
     @Column(name = "image_url_id")
@@ -21,30 +23,6 @@ public class Image {
     @JoinColumn(name = "recipe_id", nullable = false)
     @JsonIgnore
     Recipe recipe;
-
-    public Long getImageUrlId() {
-        return imageUrlId;
-    }
-
-    public void setImageUrlId(Long imageUrlId) {
-        this.imageUrlId = imageUrlId;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
-
-    public Recipe getRecipe() {
-        return recipe;
-    }
-
-    public void setRecipe(Recipe recipe) {
-        this.recipe = recipe;
-    }
 
     public Image(String imageName, String url) {
         this.imageName = imageName;
