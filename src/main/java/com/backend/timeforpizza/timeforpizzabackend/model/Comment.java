@@ -28,4 +28,10 @@ public class Comment {
     private Recipe recipe;
 
     public Comment() {}
+
+    public Comment(Long commentId, String nickname, String comment) {
+        this.commentId = commentId;
+        this.nickname = nickname;
+        this.comment = comment;
+    }
 }

@@ -1,5 +1,6 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
+import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.payload.CommentRequest;
@@ -9,6 +10,7 @@ import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.lang.Nullable;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.ResourceAccessException;
 
 @Service
 public class CommentService {
@@ -43,15 +45,12 @@ public class CommentService {
         commentRepository.deleteAllByRecipeRecipeId(recipeId);
     }
 
-    @Nullable
-    public CommentResponse updateComment(CommentRequest commentRequest, Long commentId) {
+    public CommentResponse updateComment(CommentRequest commentRequest, Long commentId) throws ResourceNotFoundException {
         Comment oldComment = commentRepository.findById(commentId)
-                .orElse(null);
-        if(oldComment != null) {
-            oldComment.setComment(commentRequest.getComment());
-            oldComment.setNickname(commentRequest.getNickname());
-            return ModelMapper.mapCommentToCommentResponse(commentRepository.save(oldComment));
-        }
-        return null;
+                .orElseThrow( () -> new ResourceNotFoundException("Comment", "commentId", commentId));
+
+        oldComment.setComment(commentRequest.getComment());
+        oldComment.setNickname(commentRequest.getNickname());
+        return ModelMapper.mapCommentToCommentResponse(commentRepository.save(oldComment));
     }
 }
