@@ -4,7 +4,7 @@
 # $1 - maven profile
 
 
- Check if profile was passed through as an argument
+# Check if profile was passed as an argument
 if [[ $# -eq 0 ]]
 then
   echo 'Name of maven profile is expected as $1 parameter'

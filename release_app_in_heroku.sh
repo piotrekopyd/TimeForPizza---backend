@@ -15,6 +15,7 @@ echo "Image id: $IMAGE_ID"
 PAYLOAD='{"updates":[{"type":"web","docker_image":"'"$IMAGE_ID"'"}]}'
 echo "Payload: $PAYLOAD"
 
+echo "Releasing Heroku application with name $1."
 curl \
  --netrc -X PATCH https://api.heroku.com/apps/timeforpizza-backend/formation \
  -d "$PAYLOAD" \
