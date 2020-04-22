@@ -1,0 +1,28 @@
+version: 2.1
+
+orbs:
+  maven: circleci/maven@1.0.0
+
+jobs:
+  build:
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+    steps:
+      - checkout
+      - run: 'mvn clean install'
+  test:
+    docker:
+      - image: circleci/openjdk:11.0.3-jdk-stretch
+    steps:
+      - checkout
+      -run: 'mvn -X test'
+
+
+
+workflows:
+  build-and-test:
+    jobs:
+      - build
+      - test:
+        requires:
+          -build
