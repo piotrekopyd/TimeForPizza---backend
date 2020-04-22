@@ -10,7 +10,7 @@ jobs:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     steps:
       - checkout
-      - run: mvn clean install
+      - run: mvn clean package
       - store_artifacts:
           path: target/timeforpizzabackend-0.0.5-SNAPSHOT.jar
   test:
@@ -22,7 +22,7 @@ jobs:
 
 
 workflows:
-  build-and-test:
+  build_and_test:
     jobs:
       - build
       - test:
