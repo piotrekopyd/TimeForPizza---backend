@@ -5,18 +5,24 @@ orbs:
 
 jobs:
   build:
-#    working_directory: ~/repo
+    working_directory: ~/timeforpizzabackend
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
+
     steps:
-#      - checkout
-      - run:
-        command: mvn clean install
+
+      - checkout
+
+      - run: mvn clean install
+
+      - store_artifacts:
+          path: target/timeforpizzabackend-0.0.5-SNAPSHOT.jar
+
   test:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     steps:
-#      - checkout
+      - checkout
       -run: mvn -X test
 
 
