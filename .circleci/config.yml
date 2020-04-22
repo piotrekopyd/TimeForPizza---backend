@@ -5,17 +5,18 @@ orbs:
 
 jobs:
   build:
-    working_directory: ~/repo
+#    working_directory: ~/repo
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     steps:
-      - checkout
-      - run: 'mvn clean install'
+#      - checkout
+      - run:
+        command: 'mvn clean install'
   test:
     docker:
       - image: circleci/openjdk:11.0.3-jdk-stretch
     steps:
-      - checkout
+#      - checkout
       -run: 'mvn -X test'
 
 
