@@ -1,9 +1,9 @@
-package com.backend.timeforpizza.timeforpizzabackend.payload;
+package com.backend.timeforpizza.timeforpizzabackend.dto;
 
 import lombok.Data;
 
 @Data
-public class ImageRequest {
+public class ImageRequestDTO {
 
     private String imageName;
 
@@ -11,7 +11,7 @@ public class ImageRequest {
 
     private Long recipeId;
 
-    public ImageRequest(String imageName, String url, Long recipeId) {
+    public ImageRequestDTO(String imageName, String url, Long recipeId) {
         this.imageName = imageName;
         this.url = url;
         this.recipeId = recipeId;

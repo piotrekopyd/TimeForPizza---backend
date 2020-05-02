@@ -1,4 +1,4 @@
-package com.backend.timeforpizza.timeforpizzabackend.payload;
+package com.backend.timeforpizza.timeforpizzabackend.dto;
 
 import lombok.Data;
 
@@ -6,15 +6,15 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Data
-public class RecipeRequest {
+public class RecipeRequestDTO {
 
     private String name;
 
     private String preparation;
 
-    private List<IngredientRequest> ingredients = new ArrayList<>();
+    private List<IngredientRequestDTO> ingredients = new ArrayList<>();
 
-    public RecipeRequest(String name, String preparation, List<IngredientRequest> ingredients) {
+    public RecipeRequestDTO(String name, String preparation, List<IngredientRequestDTO> ingredients) {
         this.name = name;
         this.preparation = preparation;
         this.ingredients = ingredients;

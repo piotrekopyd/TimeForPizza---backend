@@ -2,8 +2,8 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Image;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
-import com.backend.timeforpizza.timeforpizzabackend.payload.DeleteImageRequest;
-import com.backend.timeforpizza.timeforpizzabackend.payload.ImageRequest;
+import com.backend.timeforpizza.timeforpizzabackend.dto.DeleteImageRequestDTO;
+import com.backend.timeforpizza.timeforpizzabackend.dto.ImageRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImageRepository;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImageStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -39,7 +39,7 @@ public class ImagesService {
             new Thread(() -> {
                 try {
                     String path = imagesStorageService.uploadFile(file, recipeId);
-                    saveImagePathToDatabase(new ImageRequest(file.getOriginalFilename(), path, recipeId));
+                    saveImagePathToDatabase(new ImageRequestDTO(file.getOriginalFilename(), path, recipeId));
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
@@ -47,14 +47,14 @@ public class ImagesService {
         }
     }
 
-    private Image saveImagePathToDatabase(ImageRequest imageRequest) {
-        Image image = new Image(imageRequest.getImageName().replaceAll(" ", "_"), imageRequest.getUrl());
-        Recipe recipe = recipeService.getRecipe(imageRequest.getRecipeId());
+    private Image saveImagePathToDatabase(ImageRequestDTO imageRequestDTO) {
+        Image image = new Image(imageRequestDTO.getImageName().replaceAll(" ", "_"), imageRequestDTO.getUrl());
+        Recipe recipe = recipeService.getRecipe(imageRequestDTO.getRecipeId());
         if(recipe != null) {
             image.setRecipe(recipe);
 
-            if(imageRepository.existsByUrlAndRecipe(imageRequest.getUrl(), recipe)) {
-                image = imageRepository.findByUrlAndRecipe(imageRequest.getUrl(), recipe).get();
+            if(imageRepository.existsByUrlAndRecipe(imageRequestDTO.getUrl(), recipe)) {
+                image = imageRepository.findByUrlAndRecipe(imageRequestDTO.getUrl(), recipe).get();
             }
             return imageRepository.save(image);
         }
@@ -62,8 +62,8 @@ public class ImagesService {
     }
 
     @Transactional
-    public void deleteImages(List<DeleteImageRequest> deleteImageRequestList) {
-        for(DeleteImageRequest request: deleteImageRequestList) {
+    public void deleteImages(List<DeleteImageRequestDTO> deleteImageRequestDTOList) {
+        for(DeleteImageRequestDTO request: deleteImageRequestDTOList) {
             Optional<Image> image = imageRepository.findById(request.getImageId());
             if(image.isPresent()) {
                 deleteImageById(request.getImageId());

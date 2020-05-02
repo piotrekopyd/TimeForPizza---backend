@@ -1,9 +1,9 @@
-package com.backend.timeforpizza.timeforpizzabackend.payload;
+package com.backend.timeforpizza.timeforpizzabackend.dto;
 
 import lombok.Data;
 
 @Data
-public class CommentResponse {
+public class CommentResponseDTO {
 
     private Long commentId;
 
@@ -11,11 +11,11 @@ public class CommentResponse {
 
     private String comment;
 
-    public CommentResponse(Long commentId, String nickname, String comment) {
+    public CommentResponseDTO(Long commentId, String nickname, String comment) {
         this.commentId = commentId;
         this.nickname = nickname;
         this.comment = comment;
     }
 
-    public CommentResponse() {}
+    public CommentResponseDTO() {}
 }

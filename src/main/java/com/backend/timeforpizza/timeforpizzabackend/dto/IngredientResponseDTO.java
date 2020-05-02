@@ -1,9 +1,9 @@
-package com.backend.timeforpizza.timeforpizzabackend.payload;
+package com.backend.timeforpizza.timeforpizzabackend.dto;
 
 import lombok.Data;
 
 @Data
-public class IngredientResponse {
+public class IngredientResponseDTO {
 
     private Long ingredientId;
 
@@ -13,12 +13,12 @@ public class IngredientResponse {
 
     private String unit;
 
-    public IngredientResponse(Long ingredientId, String name, Integer amount, String unit) {
+    public IngredientResponseDTO(Long ingredientId, String name, Integer amount, String unit) {
         this.ingredientId = ingredientId;
         this.name = name;
         this.amount = amount;
         this.unit = unit;
     }
 
-    public IngredientResponse() {}
+    public IngredientResponseDTO() {}
 }
