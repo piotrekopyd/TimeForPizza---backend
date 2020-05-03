@@ -1,8 +1,8 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
-import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityRequest;
-import com.backend.timeforpizza.timeforpizzabackend.payload.CuriosityResponse;
+import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityRequestDTO;
+import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityResponseDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
@@ -14,6 +14,7 @@ import java.util.stream.Collectors;
 
 @Service
 public class CuriosityService {
+
     private final CuriosityRepository curiosityRepository;
 
     @Autowired
@@ -21,29 +22,25 @@ public class CuriosityService {
         this.curiosityRepository = curiosityRepository;
     }
 
-    public CuriosityResponse addCuriosity(CuriosityRequest curiosityRequest) {
+    public CuriosityResponseDTO addCuriosity(CuriosityRequestDTO curiosityRequestDTO) {
         Curiosity curiosity = new Curiosity();
-        curiosity.setCuriosity(curiosityRequest.getCuriosity());
-        curiosity.setTitle(curiosityRequest.getTitle());
+        curiosity.setCuriosity(curiosityRequestDTO.getCuriosity());
+        curiosity.setTitle(curiosityRequestDTO.getTitle());
 
         return ModelMapper.mapCuriosityToCuriosityResponse(curiosityRepository.save(curiosity));
     }
 
-    Curiosity addCuriosity(Curiosity curiosity) {
-        return curiosityRepository.save(curiosity);
-    }
-
-    public List<CuriosityResponse> getAllCuriosities() {
+    public List<CuriosityResponseDTO> getAllCuriosities() {
         List<Curiosity> curiosities = curiosityRepository.findAll();
 
         return curiosities.stream()
-                .map(curiosity -> new CuriosityResponse(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity()) )
+                .map(ModelMapper::mapCuriosityToCuriosityResponse)
                 .collect(Collectors.toList());
     }
 
-    public CuriosityResponse getCuriosityById(Long id) {
+    public CuriosityResponseDTO getCuriosityById(Long id) {
         return  curiosityRepository.findById(id)
-                .map(c -> new CuriosityResponse(c.getCuriosityId(), c.getTitle(), c.getCuriosity()))
+                .map(ModelMapper::mapCuriosityToCuriosityResponse)
                 .orElseThrow( () -> new ResourceNotFoundException("Curiosity", "curiosityId", id));
     }
 
@@ -56,7 +53,7 @@ public class CuriosityService {
         curiosityRepository.deleteById(id);
     }
 
-    public CuriosityResponse updateCuriosity(Long id, CuriosityRequest newCuriosity) {
+    public CuriosityResponseDTO updateCuriosity(Long id, CuriosityRequestDTO newCuriosity) {
         Curiosity oldCuriosity = getCuriosity(id);
         oldCuriosity.setTitle(newCuriosity.getTitle());
         oldCuriosity.setCuriosity(newCuriosity.getCuriosity());

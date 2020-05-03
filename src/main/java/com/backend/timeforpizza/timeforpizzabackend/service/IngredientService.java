@@ -3,12 +3,11 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
-import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientRequest;
-import com.backend.timeforpizza.timeforpizzabackend.payload.IngredientResponse;
+import com.backend.timeforpizza.timeforpizzabackend.dto.IngredientRequestDTO;
+import com.backend.timeforpizza.timeforpizzabackend.dto.IngredientResponseDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.IngredientRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -23,14 +22,14 @@ public class IngredientService {
         this.ingredientRepository = ingredientRepository;
     }
 
-    IngredientResponse addIngredient(IngredientRequest ingredientRequest, Recipe recipe) {
-        Ingredient ingredient = ModelMapper.mapIngredientRequestToIngredient(ingredientRequest);
+    public IngredientResponseDTO addIngredient(IngredientRequestDTO ingredientRequestDTO, Recipe recipe) {
+        Ingredient ingredient = ModelMapper.mapIngredientRequestToIngredient(ingredientRequestDTO);
         ingredient.setRecipe(recipe);
         return ModelMapper.mapIngredientToIngredientResponse(ingredientRepository.save(ingredient));
     }
 
-    public List<IngredientResponse> addAllIngredients(List<IngredientRequest> ingredientRequests, Recipe recipe) {
-        List<Ingredient> ingredients = ingredientRequests.stream()
+    public List<IngredientResponseDTO> addAllIngredients(List<IngredientRequestDTO> ingredientRequestDTOS, Recipe recipe) {
+        List<Ingredient> ingredients = ingredientRequestDTOS.stream()
                 .map(ModelMapper::mapIngredientRequestToIngredient)
                 .collect(Collectors.toList());
         ingredients.forEach(ingredient -> ingredient.setRecipe(recipe));
@@ -40,7 +39,7 @@ public class IngredientService {
                 .collect(Collectors.toList());
     }
 
-    public List<IngredientResponse> getIngredientsByRecipeId(Long recipeId) {
+    public List<IngredientResponseDTO> getIngredientsByRecipeId(Long recipeId) {
         return ingredientRepository.findAllByRecipeRecipeId(recipeId).stream()
                 .map(ModelMapper::mapIngredientToIngredientResponse)
                 .collect(Collectors.toList());
@@ -54,7 +53,7 @@ public class IngredientService {
         ingredientRepository.deleteAllByRecipeRecipeId(recipeId);
     }
 
-    public IngredientResponse updateIngredient(Long ingredientId, IngredientRequest newIngredient) {
+    public IngredientResponseDTO updateIngredient(Long ingredientId, IngredientRequestDTO newIngredient) {
         Ingredient oldIngredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
 

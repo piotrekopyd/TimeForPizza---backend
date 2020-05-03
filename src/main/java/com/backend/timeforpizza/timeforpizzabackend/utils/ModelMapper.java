@@ -5,14 +5,14 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
-import com.backend.timeforpizza.timeforpizzabackend.payload.*;
+import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ModelMapper {
-    public static Comment mapCommentRequestToComment(CommentRequest request) {
+    public static Comment mapCommentRequestToComment(CommentRequestDTO request) {
         Comment comment = new Comment();
         comment.setNickname(request.getNickname());
         comment.setComment(request.getComment());
@@ -20,8 +20,8 @@ public class ModelMapper {
         return comment;
     }
 
-    public static CommentResponse mapCommentToCommentResponse(Comment comment) {
-        CommentResponse response = new CommentResponse();
+    public static CommentResponseDTO mapCommentToCommentResponse(Comment comment) {
+        CommentResponseDTO response = new CommentResponseDTO();
         response.setComment(comment.getComment());
         response.setCommentId(comment.getCommentId());
         response.setNickname(comment.getNickname());
@@ -29,42 +29,42 @@ public class ModelMapper {
         return response;
     }
 
-    public static Ingredient mapIngredientRequestToIngredient(IngredientRequest ingredientRequest) {
+    public static Ingredient mapIngredientRequestToIngredient(IngredientRequestDTO ingredientRequestDTO) {
         Ingredient ingredient = new Ingredient();
-        ingredient.setName(ingredientRequest.getName());
-        ingredient.setAmount(ingredientRequest.getAmount());
-        ingredient.setUnit(ingredientRequest.getUnit());
+        ingredient.setName(ingredientRequestDTO.getName());
+        ingredient.setAmount(ingredientRequestDTO.getAmount());
+        ingredient.setUnit(ingredientRequestDTO.getUnit());
 
         return ingredient;
     }
 
-    public static IngredientResponse mapIngredientToIngredientResponse(Ingredient ingredient) {
-        IngredientResponse ingredientResponse = new IngredientResponse();
-        ingredientResponse.setIngredientId(ingredient.getIngredientId());
-        ingredientResponse.setAmount(ingredient.getAmount());
-        ingredientResponse.setUnit(ingredient.getUnit());
-        ingredientResponse.setName(ingredient.getName());
+    public static IngredientResponseDTO mapIngredientToIngredientResponse(Ingredient ingredient) {
+        IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
+        ingredientResponseDTO.setIngredientId(ingredient.getIngredientId());
+        ingredientResponseDTO.setAmount(ingredient.getAmount());
+        ingredientResponseDTO.setUnit(ingredient.getUnit());
+        ingredientResponseDTO.setName(ingredient.getName());
 
-        return ingredientResponse;
+        return ingredientResponseDTO;
     }
 
-    public static Ingredient mapIngredientResponseToIngredient(IngredientResponse ingredientResponse) {
+    public static Ingredient mapIngredientResponseToIngredient(IngredientResponseDTO ingredientResponseDTO) {
         Ingredient ingredient = new Ingredient();
-        ingredient.setName(ingredientResponse.getName());
-        ingredient.setAmount(ingredientResponse.getAmount());
-        ingredient.setUnit(ingredientResponse.getUnit());
-        ingredient.setIngredientId(ingredientResponse.getIngredientId());
+        ingredient.setName(ingredientResponseDTO.getName());
+        ingredient.setAmount(ingredientResponseDTO.getAmount());
+        ingredient.setUnit(ingredientResponseDTO.getUnit());
+        ingredient.setIngredientId(ingredientResponseDTO.getIngredientId());
 
         return ingredient;
     }
 
-    public static Recipe mapRecipeRequestToRecipe(RecipeRequest recipeRequest) {
+    public static Recipe mapRecipeRequestToRecipe(RecipeRequestDTO recipeRequestDTO) {
         Recipe recipe = new Recipe();
-        recipe.setName(recipeRequest.getName());
-        recipe.setPreparation(recipeRequest.getPreparation());
+        recipe.setName(recipeRequestDTO.getName());
+        recipe.setPreparation(recipeRequestDTO.getPreparation());
 
         List<Ingredient> ingredients = new ArrayList<>();
-        recipeRequest.getIngredients().stream()
+        recipeRequestDTO.getIngredients().stream()
                 .map(ModelMapper::mapIngredientRequestToIngredient)
                 .forEach(ingredients::add);
         recipe.setIngredients(ingredients);
@@ -72,30 +72,30 @@ public class ModelMapper {
         return recipe;
     }
 
-    public static RecipeResponse mapRecipeToRecipeResponse(Recipe recipe) {
-        RecipeResponse recipeResponse = new RecipeResponse();
-        recipeResponse.setName(recipe.getName());
-        recipeResponse.setPreparation(recipe.getPreparation());
-        recipeResponse.setRecipeId(recipe.getRecipeId());
+    public static RecipeResponseDTO mapRecipeToRecipeResponse(Recipe recipe) {
+        RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
+        recipeResponseDTO.setName(recipe.getName());
+        recipeResponseDTO.setPreparation(recipe.getPreparation());
+        recipeResponseDTO.setRecipeId(recipe.getRecipeId());
 
-        List<CommentResponse> commentResponseList = recipe.getComments().stream()
+        List<CommentResponseDTO> commentResponseDTOList = recipe.getComments().stream()
                 .map(ModelMapper::mapCommentToCommentResponse)
                 .collect(Collectors.toList());
-        recipeResponse.setComments(commentResponseList);
+        recipeResponseDTO.setComments(commentResponseDTOList);
 
-        List<IngredientResponse> ingredientResponseList = recipe.getIngredients().stream()
+        List<IngredientResponseDTO> ingredientResponseDTOList = recipe.getIngredients().stream()
                 .map(ModelMapper::mapIngredientToIngredientResponse)
                 .collect(Collectors.toList());
-        recipeResponse.setIngredients(ingredientResponseList);
+        recipeResponseDTO.setIngredients(ingredientResponseDTOList);
 
-        return recipeResponse;
+        return recipeResponseDTO;
     }
 
-    public static CuriosityResponse mapCuriosityToCuriosityResponse(Curiosity curiosity) {
-        return  new CuriosityResponse(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity());
+    public static CuriosityResponseDTO mapCuriosityToCuriosityResponse(Curiosity curiosity) {
+        return new CuriosityResponseDTO(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity(), curiosity.getAuthor());
     }
 
-    public static Curiosity mapCuriosityRequestToCuriosity(CuriosityRequest curiosityRequest) {
-        return new Curiosity(curiosityRequest.getTitle(), curiosityRequest.getCuriosity());
+    public static Curiosity mapCuriosityRequestToCuriosity(CuriosityRequestDTO curiosityRequestDTO) {
+        return new Curiosity(curiosityRequestDTO.getTitle(), curiosityRequestDTO.getCuriosity(), curiosityRequestDTO.getAuthor());
     }
 }

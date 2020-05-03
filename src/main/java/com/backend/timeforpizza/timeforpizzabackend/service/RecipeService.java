@@ -3,14 +3,14 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
-import com.backend.timeforpizza.timeforpizzabackend.payload.*;
+import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.multipart.MultipartFile;
 
-import javax.annotation.PostConstruct;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -19,63 +19,53 @@ import java.util.stream.Collectors;
 public class RecipeService {
     private final RecipeRepository recipeRepository;
     private final IngredientService ingredientService;
-    private final ImagesService imagesService;
+    private final RecipeImageService recipeImageService;
     private final CommentService commentService;
 
     @Autowired
     public RecipeService(RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService
-                         ,ImagesService imagesService
+                         , RecipeImageService recipeImageService
     ) {
         this.recipeRepository = recipeRepository;
         this.ingredientService = ingredientService;
         this.commentService = commentService;
-        this.imagesService = imagesService;
+        this.recipeImageService = recipeImageService;
     }
 
-    @PostConstruct
-    private void setRecipeInImagesService() {
-        imagesService.setRecipeService(this);
-    }
-
-    /** Recipes */
     @Transactional
-    public RecipeResponse addRecipe(RecipeRequest recipeRequest) {
-        Recipe recipe = ModelMapper.mapRecipeRequestToRecipe(recipeRequest);
+    public RecipeResponseDTO addRecipe(RecipeRequestDTO recipeRequestDTO) {
+        Recipe recipe = ModelMapper.mapRecipeRequestToRecipe(recipeRequestDTO);
         recipeRepository.save(recipe);
 
-        List<IngredientRequest> ingredientRequests = recipeRequest.getIngredients();
-        ingredientService.addAllIngredients(ingredientRequests, recipe);
+        List<IngredientRequestDTO> ingredientRequestDTOS = recipeRequestDTO.getIngredients();
+        ingredientService.addAllIngredients(ingredientRequestDTOS, recipe);
         return ModelMapper.mapRecipeToRecipeResponse(recipe);
     }
 
-    public RecipeResponse getRecipeById(Long id) {
+    public RecipeResponseDTO getRecipeById(Long id) {
         return recipeRepository.findById(id)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
     }
 
-    Recipe getRecipe(Long id) {
-        return recipeRepository.findById(id)
-                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", id));
-    }
-
-    public List<RecipeResponse> getAllRecipes() {
+    public List<RecipeResponseDTO> getAllRecipes() {
         return  recipeRepository.findAll().stream()
                     .map(ModelMapper::mapRecipeToRecipeResponse)
                     .collect(Collectors.toList());
     }
 
     @Transactional
-    public RecipeResponse updateRecipe(RecipeRequest recipeRequest, Long recipeId) {
-        Recipe oldRecipe = getRecipe(recipeId);
+    public RecipeResponseDTO updateRecipe(RecipeRequestDTO recipeRequestDTO, Long recipeId) {
+        Recipe oldRecipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
 
-        List<Ingredient> newIngredients = recipeRequest.getIngredients().stream()
+        List<Ingredient> newIngredients = recipeRequestDTO.getIngredients().stream()
                 .map(ModelMapper::mapIngredientRequestToIngredient)
                 .collect(Collectors.toList());
         newIngredients.forEach(ingredient -> ingredient.setRecipe(oldRecipe));
         oldRecipe.setIngredients(newIngredients);
-        oldRecipe.setPreparation(recipeRequest.getPreparation());
-        oldRecipe.setName(recipeRequest.getName());
+        oldRecipe.setPreparation(recipeRequestDTO.getPreparation());
+        oldRecipe.setName(recipeRequestDTO.getName());
         return ModelMapper.mapRecipeToRecipeResponse(recipeRepository.save(oldRecipe));
     }
 
@@ -83,46 +73,60 @@ public class RecipeService {
     public void deleteRecipe(Long recipeId) {
         commentService.deleteAllCommentsByRecipeId(recipeId);
         ingredientService.deleteAllIngredientsByRecipeId(recipeId);
-        imagesService.deleteAllImagesByRecipeId(recipeId);
+        recipeImageService.deleteAllImagesByRecipeId(recipeId);
         recipeRepository.deleteById(recipeId);
     }
 
     /** Ingredients */
-    public IngredientResponse addIngredient(Long recipeId, IngredientRequest ingredientRequest) {
-        Recipe recipe = getRecipe(recipeId);
-        return ingredientService.addIngredient(ingredientRequest, recipe);
+    public IngredientResponseDTO addIngredient(Long recipeId, IngredientRequestDTO ingredientRequestDTO) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
+        return ingredientService.addIngredient(ingredientRequestDTO, recipe);
     }
-    public List<IngredientResponse> getAllIngredientsByRecipeId(Long recipeId) {
-        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
+    public List<IngredientResponseDTO> getAllIngredientsByRecipeId(Long recipeId) {
+        RecipeResponseDTO recipeResponseDTO = recipeRepository.findById(recipeId)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElse(null);
 
-        if(recipeResponse != null) {
-            return recipeResponse.getIngredients();
+        if(recipeResponseDTO != null) {
+            return recipeResponseDTO.getIngredients();
         }
 
         return new ArrayList<>();
     }
 
     /** Comments */
-    public CommentResponse addComment(Long recipeId, CommentRequest commentRequest) {
-        Recipe recipe = getRecipe(recipeId);
-        return commentService.addComment(commentRequest, recipe);
+    public CommentResponseDTO addComment(Long recipeId, CommentRequestDTO commentRequestDTO) {
+        Recipe recipe =recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
+        return commentService.addComment(commentRequestDTO, recipe);
     }
 
     public void deleteComment(Long commentId) {
         commentService.deleteCommentById(commentId);
     }
 
-    public List<CommentResponse> getAllCommentsByRecipeId(Long recipeId) {
-        RecipeResponse recipeResponse = recipeRepository.findById(recipeId)
+    public List<CommentResponseDTO> getAllCommentsByRecipeId(Long recipeId) {
+        RecipeResponseDTO recipeResponseDTO = recipeRepository.findById(recipeId)
                 .map(ModelMapper::mapRecipeToRecipeResponse)
                 .orElse(null);
 
-        if(recipeResponse != null) {
-            return recipeResponse.getComments();
+        if(recipeResponseDTO != null) {
+            return recipeResponseDTO.getComments();
         }
 
         return new ArrayList<>();
+    }
+
+    /** Images */
+    public void uploadImages(Long recipeId, MultipartFile[] images) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
+
+        recipeImageService.uploadImages(images, recipe);
+    }
+
+    public void deleteImages(List<DeleteImageRequestDTO> deleteImageRequests) {
+        recipeImageService.deleteImages(deleteImageRequests);
     }
 }

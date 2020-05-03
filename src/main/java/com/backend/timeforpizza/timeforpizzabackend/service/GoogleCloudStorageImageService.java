@@ -12,9 +12,9 @@ import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
 
-@Service("googleCloudStorage")
+@Service()
 @Qualifier("googleCloudStorage")
-public class GoogleCloudStorageService implements ImageStorageRepository {
+public class GoogleCloudStorageImageService implements ImageStorageRepository {
 
     @Value("${google.cloud.storage.project.id}")
     private String projectId;
@@ -30,7 +30,7 @@ public class GoogleCloudStorageService implements ImageStorageRepository {
 
     private Storage storage;
 
-    public GoogleCloudStorageService() {
+    public GoogleCloudStorageImageService() {
     }
 
     @PostConstruct

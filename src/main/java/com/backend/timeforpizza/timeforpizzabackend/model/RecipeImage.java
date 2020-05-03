@@ -7,7 +7,8 @@ import javax.persistence.*;
 
 @Entity
 @Data
-public class Image {
+@Table(name = "RecipeImage")
+public class RecipeImage {
     @Id
     @Column(name = "image_url_id")
     @GeneratedValue(strategy=GenerationType.IDENTITY)
@@ -24,11 +25,10 @@ public class Image {
     @JsonIgnore
     Recipe recipe;
 
-    public Image(String imageName, String url) {
+    public RecipeImage(String imageName, String url) {
         this.imageName = imageName;
         this.url = url;
     }
 
-    public Image() {
-    }
+    public RecipeImage() {}
 }

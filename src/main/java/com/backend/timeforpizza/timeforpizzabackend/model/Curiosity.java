@@ -1,10 +1,12 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
 
 @Data
+@AllArgsConstructor
 @Entity
 @Table(name = "Curiosity")
 public class Curiosity {
@@ -15,19 +17,15 @@ public class Curiosity {
 
     private String title;
 
-    @Column(name = "curiosity")
     private String curiosity;
+
+    private String author;
 
     public Curiosity(){}
 
-    public Curiosity(String title, String curiosity) {
+    public Curiosity(String title, String curiosity, String author) {
         this.title = title;
         this.curiosity = curiosity;
-    }
-
-    public Curiosity(Long curiosityId, String title, String curiosity) {
-        this.curiosityId = curiosityId;
-        this.title = title;
-        this.curiosity = curiosity;
+        this.author = author;
     }
 }
