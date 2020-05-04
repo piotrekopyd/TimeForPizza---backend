@@ -1,13 +1,13 @@
 package com.backend.timeforpizza.timeforpizzabackend.repository;
 
 import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
-import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;
+
+import java.util.List;
 
 @Repository
 public interface CommentRepository extends JpaRepository<Comment, Long> {
-    Iterable<Comment> findByRecipeRecipeId(Long recipeId);
+    List<Comment> findAllByRecipeRecipeId(Long recipeId);
     void deleteAllByRecipeRecipeId(Long recipeId);
 }

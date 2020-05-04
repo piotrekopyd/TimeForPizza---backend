@@ -9,7 +9,7 @@ import java.util.Optional;
 
 @Repository
 public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> {
-    Optional<RecipeImage> findByUrlAndRecipe(String url, Recipe recipe);
-    Boolean existsByUrlAndRecipe(String url, Recipe recipe);
+    Optional<RecipeImage> findByUrlAndRecipeRecipeId(String url, Long recipeId);
+    Boolean existsByUrlAndRecipeRecipeId(String url, Long recipeId);
     void deleteAllByRecipeRecipeId(Long recipeId);
 }

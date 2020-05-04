@@ -1,10 +1,12 @@
 package com.backend.timeforpizza.timeforpizzabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import java.util.List;
 
 @Data
+@AllArgsConstructor
 public class RecipeResponseDTO {
 
     private Long recipeId;
@@ -13,17 +15,11 @@ public class RecipeResponseDTO {
 
     private String preparation;
 
+    private String date;
+
     private List<IngredientResponseDTO> ingredients;
 
     private List<CommentResponseDTO> comments;
-
-    public RecipeResponseDTO(Long recipeId, String name, String preparation, List<IngredientResponseDTO> ingredients, List<CommentResponseDTO> comments) {
-        this.recipeId = recipeId;
-        this.name = name;
-        this.preparation = preparation;
-        this.ingredients = ingredients;
-        this.comments = comments;
-    }
 
     public RecipeResponseDTO() {}
 }

@@ -1,8 +1,10 @@
 package com.backend.timeforpizza.timeforpizzabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class IngredientResponseDTO {
 
     private Long ingredientId;
@@ -12,13 +14,6 @@ public class IngredientResponseDTO {
     private Integer amount;
 
     private String unit;
-
-    public IngredientResponseDTO(Long ingredientId, String name, Integer amount, String unit) {
-        this.ingredientId = ingredientId;
-        this.name = name;
-        this.amount = amount;
-        this.unit = unit;
-    }
 
     public IngredientResponseDTO() {}
 }

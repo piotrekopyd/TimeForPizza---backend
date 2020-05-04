@@ -7,12 +7,11 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 public class ModelMapper {
-    public static Comment mapCommentRequestToComment(CommentRequestDTO request) {
+    public static Comment mapToComment(CommentRequestDTO request) {
         Comment comment = new Comment();
         comment.setNickname(request.getNickname());
         comment.setComment(request.getComment());
@@ -20,16 +19,17 @@ public class ModelMapper {
         return comment;
     }
 
-    public static CommentResponseDTO mapCommentToCommentResponse(Comment comment) {
+    public static CommentResponseDTO mapToCommentResponse(Comment comment) {
         CommentResponseDTO response = new CommentResponseDTO();
         response.setComment(comment.getComment());
         response.setCommentId(comment.getCommentId());
         response.setNickname(comment.getNickname());
+        response.setDate(comment.getDate() != null ? comment.getDate().toString() : null);
 
         return response;
     }
 
-    public static Ingredient mapIngredientRequestToIngredient(IngredientRequestDTO ingredientRequestDTO) {
+    public static Ingredient mapToIngredient(IngredientRequestDTO ingredientRequestDTO) {
         Ingredient ingredient = new Ingredient();
         ingredient.setName(ingredientRequestDTO.getName());
         ingredient.setAmount(ingredientRequestDTO.getAmount());
@@ -38,7 +38,7 @@ public class ModelMapper {
         return ingredient;
     }
 
-    public static IngredientResponseDTO mapIngredientToIngredientResponse(Ingredient ingredient) {
+    public static IngredientResponseDTO mapToIngredientResponse(Ingredient ingredient) {
         IngredientResponseDTO ingredientResponseDTO = new IngredientResponseDTO();
         ingredientResponseDTO.setIngredientId(ingredient.getIngredientId());
         ingredientResponseDTO.setAmount(ingredient.getAmount());
@@ -48,54 +48,35 @@ public class ModelMapper {
         return ingredientResponseDTO;
     }
 
-    public static Ingredient mapIngredientResponseToIngredient(IngredientResponseDTO ingredientResponseDTO) {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setName(ingredientResponseDTO.getName());
-        ingredient.setAmount(ingredientResponseDTO.getAmount());
-        ingredient.setUnit(ingredientResponseDTO.getUnit());
-        ingredient.setIngredientId(ingredientResponseDTO.getIngredientId());
-
-        return ingredient;
-    }
-
-    public static Recipe mapRecipeRequestToRecipe(RecipeRequestDTO recipeRequestDTO) {
+    public static Recipe mapToRecipe(RecipeRequestDTO recipeRequestDTO) {
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());
         recipe.setPreparation(recipeRequestDTO.getPreparation());
 
-        List<Ingredient> ingredients = new ArrayList<>();
-        recipeRequestDTO.getIngredients().stream()
-                .map(ModelMapper::mapIngredientRequestToIngredient)
-                .forEach(ingredients::add);
-        recipe.setIngredients(ingredients);
-
         return recipe;
     }
 
-    public static RecipeResponseDTO mapRecipeToRecipeResponse(Recipe recipe) {
+    public static RecipeResponseDTO mapToRecipeResponse(Recipe recipe, List<Ingredient> ingredients, List<Comment> comments) {
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
         recipeResponseDTO.setName(recipe.getName());
         recipeResponseDTO.setPreparation(recipe.getPreparation());
         recipeResponseDTO.setRecipeId(recipe.getRecipeId());
+        recipeResponseDTO.setDate(recipe.getDate() != null ? recipe.getDate().toString() : null);
 
-        List<CommentResponseDTO> commentResponseDTOList = recipe.getComments().stream()
-                .map(ModelMapper::mapCommentToCommentResponse)
+        List<CommentResponseDTO> commentResponseDTOList = comments.stream()
+                .map(ModelMapper::mapToCommentResponse)
                 .collect(Collectors.toList());
         recipeResponseDTO.setComments(commentResponseDTOList);
 
-        List<IngredientResponseDTO> ingredientResponseDTOList = recipe.getIngredients().stream()
-                .map(ModelMapper::mapIngredientToIngredientResponse)
+        List<IngredientResponseDTO> ingredientResponseDTOList = ingredients.stream()
+                .map(ModelMapper::mapToIngredientResponse)
                 .collect(Collectors.toList());
         recipeResponseDTO.setIngredients(ingredientResponseDTOList);
 
         return recipeResponseDTO;
     }
 
-    public static CuriosityResponseDTO mapCuriosityToCuriosityResponse(Curiosity curiosity) {
+    public static CuriosityResponseDTO mapToCuriosityResponse(Curiosity curiosity) {
         return new CuriosityResponseDTO(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity(), curiosity.getAuthor());
-    }
-
-    public static Curiosity mapCuriosityRequestToCuriosity(CuriosityRequestDTO curiosityRequestDTO) {
-        return new Curiosity(curiosityRequestDTO.getTitle(), curiosityRequestDTO.getCuriosity(), curiosityRequestDTO.getAuthor());
     }
 }

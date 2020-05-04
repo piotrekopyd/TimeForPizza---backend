@@ -1,8 +1,10 @@
 package com.backend.timeforpizza.timeforpizzabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CuriosityResponseDTO {
 
     private Long curiosityId;
@@ -12,11 +14,4 @@ public class CuriosityResponseDTO {
     private String curiosity;
 
     private String author;
-
-    public CuriosityResponseDTO(Long curiosityId, String title, String curiosity, String author) {
-        this.curiosityId = curiosityId;
-        this.title = title;
-        this.curiosity = curiosity;
-        this.author = author;
-    }
 }

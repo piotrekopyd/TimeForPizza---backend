@@ -4,7 +4,6 @@ import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundEx
 import com.backend.timeforpizza.timeforpizzabackend.model.RecipeImage;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.DeleteImageRequestDTO;
-import com.backend.timeforpizza.timeforpizzabackend.dto.ImageRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeImageRepository;
 import com.backend.timeforpizza.timeforpizzabackend.repository.ImageStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -33,7 +32,8 @@ public class RecipeImageService {
             new Thread(() -> {
                 try {
                     String path = imagesStorageService.uploadFile(file, recipe.getRecipeId());
-                    saveImagePathToDatabase(new ImageRequestDTO(file.getOriginalFilename(), path, recipe.getRecipeId()), recipe);
+                    RecipeImage recipeImage = new RecipeImage(null, path, file.getOriginalFilename(), recipe);
+                    saveImagePathToDatabase(recipeImage);
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
@@ -41,12 +41,12 @@ public class RecipeImageService {
         }
     }
 
-    public RecipeImage saveImagePathToDatabase(ImageRequestDTO imageRequestDTO, Recipe recipe) {
-        RecipeImage recipeImage = new RecipeImage(imageRequestDTO.getImageName().replaceAll(" ", "_"), imageRequestDTO.getUrl());
-        recipeImage.setRecipe(recipe);
+    public RecipeImage saveImagePathToDatabase(RecipeImage recipeImage) {
+        if (recipeImageRepository.existsByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())) {
+            return recipeImageRepository.findByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())
+                    .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImage", recipeImage.getUrl()));
+        }
 
-        recipeImage = recipeImageRepository.findByUrlAndRecipe(imageRequestDTO.getUrl(), recipe)
-                .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImage", imageRequestDTO.getUrl()));
         return recipeImageRepository.save(recipeImage);
     }
 

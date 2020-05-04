@@ -19,11 +19,6 @@ public class RecipeController {
         this.recipeService = recipeService;
     }
 
-    @GetMapping
-    public List<RecipeResponseDTO> getAllRecipes() {
-        return recipeService.getAllRecipes();
-    }
-
     @DeleteMapping(path = "{id}")
     public void deleteRecipe(@PathVariable("id") Long recipeId) {
         recipeService.deleteRecipe(recipeId);

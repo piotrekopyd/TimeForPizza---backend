@@ -1,8 +1,10 @@
 package com.backend.timeforpizza.timeforpizzabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CuriosityRequestDTO {
 
     private String title;
@@ -10,10 +12,4 @@ public class CuriosityRequestDTO {
     private String curiosity;
 
     private String author;
-
-    public CuriosityRequestDTO(String title, String curiosity, String author) {
-        this.title = title;
-        this.curiosity = curiosity;
-        this.author = author;
-    }
 }

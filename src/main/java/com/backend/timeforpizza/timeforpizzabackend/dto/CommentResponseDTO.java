@@ -1,8 +1,10 @@
 package com.backend.timeforpizza.timeforpizzabackend.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 @Data
+@AllArgsConstructor
 public class CommentResponseDTO {
 
     private Long commentId;
@@ -11,11 +13,7 @@ public class CommentResponseDTO {
 
     private String comment;
 
-    public CommentResponseDTO(Long commentId, String nickname, String comment) {
-        this.commentId = commentId;
-        this.nickname = nickname;
-        this.comment = comment;
-    }
+    private String date;
 
     public CommentResponseDTO() {}
 }
