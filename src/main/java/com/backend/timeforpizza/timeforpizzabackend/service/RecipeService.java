@@ -5,6 +5,7 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
+import com.backend.timeforpizza.timeforpizzabackend.model.RecipeImage;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +44,7 @@ public class RecipeService {
                 .peek(e -> e.setRecipe(recipe))
                 .collect(Collectors.toList()));
 
-        return ModelMapper.mapToRecipeResponse(recipe, ingredients, List.of());
+        return ModelMapper.mapToRecipeResponse(recipe, ingredients, List.of(), List.of());
     }
 
     public RecipeResponseDTO getRecipeById(Long recipeId) {
@@ -52,8 +53,9 @@ public class RecipeService {
 
         List<Ingredient> ingredients = ingredientService.getAllIngredientsByRecipeId(recipeId);
         List<Comment> comments = commentService.getAllCommentsByRecipeId(recipeId);
+        List<RecipeImage> images = recipeImageService.getAllByRecipeId(recipeId);
 
-        return ModelMapper.mapToRecipeResponse(recipe, ingredients, comments);
+        return ModelMapper.mapToRecipeResponse(recipe, ingredients, comments, images);
     }
 
     public List<RecipeListResponseDTO> getAllRecipes() {
@@ -77,7 +79,17 @@ public class RecipeService {
                 .collect(Collectors.toList()));
 
         List<Comment> comments = commentService.getAllCommentsByRecipeId(recipeId);
-        return ModelMapper.mapToRecipeResponse(oldRecipe, ingredients, comments);
+        List<RecipeImage> images = recipeImageService.getAllByRecipeId(recipeId);
+        return ModelMapper.mapToRecipeResponse(oldRecipe, ingredients, comments, images);
+    }
+
+    public RecipeResponseDTO updateRecipeThumbnail(Long recipeId, String thumbnailUrl) {
+        Recipe recipe = recipeRepository.findById(recipeId)
+                .orElseThrow(() -> new ResourceNotFoundException("Recipe", "recipeId", recipeId));
+
+        recipe.setThumbnailUrl(thumbnailUrl);
+        recipeRepository.save(recipe);
+        return ModelMapper.mapToRecipeResponse(recipe, ingredientService.getAllIngredientsByRecipeId(recipeId), commentService.getAllCommentsByRecipeId(recipeId), recipeImageService.getAllByRecipeId(recipeId));
     }
 
     @Transactional

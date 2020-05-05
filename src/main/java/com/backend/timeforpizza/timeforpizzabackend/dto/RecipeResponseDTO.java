@@ -21,5 +21,7 @@ public class RecipeResponseDTO {
 
     private List<CommentResponseDTO> comments;
 
+    private List<RecipeImageResponseDTO> images;
+
     public RecipeResponseDTO() {}
 }

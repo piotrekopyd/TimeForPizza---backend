@@ -18,8 +18,8 @@ public class Recipe {
 
     private String preparation;
 
-    @Column(name = "miniature_image_url")
-    private String miniatureImageUrl;
+    @Column(name = "thumbnail_url")
+    private String thumbnailUrl;
 
     private LocalDate date;
 

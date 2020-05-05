@@ -1,10 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.utils;
 
 
-import com.backend.timeforpizza.timeforpizzabackend.model.Comment;
-import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
-import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
-import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
+import com.backend.timeforpizza.timeforpizzabackend.model.*;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 
 import java.util.List;
@@ -52,31 +49,38 @@ public class ModelMapper {
         Recipe recipe = new Recipe();
         recipe.setName(recipeRequestDTO.getName());
         recipe.setPreparation(recipeRequestDTO.getPreparation());
+        recipe.setThumbnailUrl(recipeRequestDTO.getThumbnailUrl());
 
         return recipe;
     }
 
-    public static RecipeResponseDTO mapToRecipeResponse(Recipe recipe, List<Ingredient> ingredients, List<Comment> comments) {
+    public static RecipeResponseDTO mapToRecipeResponse(Recipe recipe, List<Ingredient> ingredients, List<Comment> comments, List<RecipeImage> images) {
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
         recipeResponseDTO.setName(recipe.getName());
         recipeResponseDTO.setPreparation(recipe.getPreparation());
         recipeResponseDTO.setRecipeId(recipe.getRecipeId());
         recipeResponseDTO.setDate(recipe.getDate() != null ? recipe.getDate().toString() : null);
 
-        List<CommentResponseDTO> commentResponseDTOList = comments.stream()
+        recipeResponseDTO.setComments(comments.stream()
                 .map(ModelMapper::mapToCommentResponse)
-                .collect(Collectors.toList());
-        recipeResponseDTO.setComments(commentResponseDTOList);
+                .collect(Collectors.toList()));
 
-        List<IngredientResponseDTO> ingredientResponseDTOList = ingredients.stream()
+        recipeResponseDTO.setIngredients(ingredients.stream()
                 .map(ModelMapper::mapToIngredientResponse)
-                .collect(Collectors.toList());
-        recipeResponseDTO.setIngredients(ingredientResponseDTOList);
+                .collect(Collectors.toList()));
+
+        recipeResponseDTO.setImages(images.stream()
+                .map(ModelMapper::mapToRecipeImageResponse)
+                .collect(Collectors.toList()));
 
         return recipeResponseDTO;
     }
 
     public static CuriosityResponseDTO mapToCuriosityResponse(Curiosity curiosity) {
         return new CuriosityResponseDTO(curiosity.getCuriosityId(), curiosity.getTitle(), curiosity.getCuriosity(), curiosity.getAuthor());
+    }
+
+    public static RecipeImageResponseDTO mapToRecipeImageResponse(RecipeImage recipeImage) {
+        return new RecipeImageResponseDTO(recipeImage.getRecipeImageId(), recipeImage.getUrl(), recipeImage.getImageName());
     }
 }

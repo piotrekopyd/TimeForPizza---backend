@@ -15,4 +15,6 @@ public class RecipeRequestDTO {
     private String preparation;
 
     private List<IngredientRequestDTO> ingredients;
+
+    private String thumbnailUrl;
 }

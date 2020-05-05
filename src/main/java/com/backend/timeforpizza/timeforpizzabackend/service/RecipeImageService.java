@@ -26,6 +26,10 @@ public class RecipeImageService {
         this.imagesStorageService = imagesStorageService;
     }
 
+    public List<RecipeImage> getAllByRecipeId(Long recipeId) {
+        return recipeImageRepository.findAllByRecipeRecipeId(recipeId);
+    }
+
     @Transactional
     public void uploadImages(MultipartFile[] multipartFiles, Recipe recipe) {
         for (MultipartFile file: multipartFiles) {
@@ -63,6 +67,7 @@ public class RecipeImageService {
     @Transactional
     public void deleteAllImagesByRecipeId(Long recipeId) {
         if (imagesStorageService.deleteAllFilesByRecipeId(recipeId)) {
+            // TODO: Delete all from gcs
             recipeImageRepository.deleteAllByRecipeRecipeId(recipeId);
         } else {
             throw new RuntimeException("Failed to delete images from storage");

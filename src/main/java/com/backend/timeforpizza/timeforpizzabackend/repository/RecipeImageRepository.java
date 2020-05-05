@@ -5,11 +5,13 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @Repository
 public interface RecipeImageRepository extends JpaRepository<RecipeImage, Long> {
     Optional<RecipeImage> findByUrlAndRecipeRecipeId(String url, Long recipeId);
+    List<RecipeImage> findAllByRecipeRecipeId(Long recipeId);
     Boolean existsByUrlAndRecipeRecipeId(String url, Long recipeId);
     void deleteAllByRecipeRecipeId(Long recipeId);
 }
