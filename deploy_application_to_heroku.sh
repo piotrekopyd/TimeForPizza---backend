@@ -3,7 +3,6 @@
 #Expectet arguments:
 # $1 - maven profile
 
-
 # Check if profile was passed as an argument
 if [[ $# -eq 0 ]]
 then
