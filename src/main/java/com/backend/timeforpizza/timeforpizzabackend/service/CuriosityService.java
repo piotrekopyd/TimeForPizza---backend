@@ -5,7 +5,7 @@ import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityResponseDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
-import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
+import com.backend.timeforpizza.timeforpizzabackend.util.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,10 +23,7 @@ public class CuriosityService {
     }
 
     public CuriosityResponseDTO addCuriosity(CuriosityRequestDTO curiosityRequestDTO) {
-        Curiosity curiosity = new Curiosity();
-        curiosity.setCuriosity(curiosityRequestDTO.getCuriosity());
-        curiosity.setTitle(curiosityRequestDTO.getTitle());
-
+        Curiosity curiosity = ModelMapper.mapToCuriosity(curiosityRequestDTO);
         return ModelMapper.mapToCuriosityResponse(curiosityRepository.save(curiosity));
     }
 

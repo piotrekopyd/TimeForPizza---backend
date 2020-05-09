@@ -7,7 +7,7 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 import com.backend.timeforpizza.timeforpizzabackend.model.RecipeImage;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
-import com.backend.timeforpizza.timeforpizzabackend.utils.ModelMapper;
+import com.backend.timeforpizza.timeforpizzabackend.util.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;

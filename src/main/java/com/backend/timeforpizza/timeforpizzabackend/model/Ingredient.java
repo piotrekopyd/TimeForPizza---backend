@@ -1,6 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.model;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import lombok.AllArgsConstructor;
 import lombok.Data;
 
 import javax.persistence.*;
@@ -8,6 +9,7 @@ import javax.validation.constraints.NotNull;
 
 @Data
 @Entity
+@AllArgsConstructor
 @Table(name = "Ingredient")
 public class Ingredient {
     @Id

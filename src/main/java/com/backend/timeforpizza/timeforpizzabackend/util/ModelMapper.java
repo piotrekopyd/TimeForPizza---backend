@@ -1,4 +1,4 @@
-package com.backend.timeforpizza.timeforpizzabackend.utils;
+package com.backend.timeforpizza.timeforpizzabackend.util;
 
 
 import com.backend.timeforpizza.timeforpizzabackend.model.*;
@@ -27,12 +27,7 @@ public class ModelMapper {
     }
 
     public static Ingredient mapToIngredient(IngredientRequestDTO ingredientRequestDTO) {
-        Ingredient ingredient = new Ingredient();
-        ingredient.setName(ingredientRequestDTO.getName());
-        ingredient.setAmount(ingredientRequestDTO.getAmount());
-        ingredient.setUnit(ingredientRequestDTO.getUnit());
-
-        return ingredient;
+        return new Ingredient(null, ingredientRequestDTO.getName(), ingredientRequestDTO.getAmount(), ingredientRequestDTO.getUnit(), null);
     }
 
     public static IngredientResponseDTO mapToIngredientResponse(Ingredient ingredient) {
@@ -74,6 +69,10 @@ public class ModelMapper {
                 .collect(Collectors.toList()));
 
         return recipeResponseDTO;
+    }
+
+    public static Curiosity mapToCuriosity(CuriosityRequestDTO curiosityRequest) {
+        return new Curiosity(null, curiosityRequest.getTitle(), curiosityRequest.getCuriosity(), curiosityRequest.getAuthor());
     }
 
     public static CuriosityResponseDTO mapToCuriosityResponse(Curiosity curiosity) {
