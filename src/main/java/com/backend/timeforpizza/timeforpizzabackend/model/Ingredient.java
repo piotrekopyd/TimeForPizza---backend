@@ -21,7 +21,7 @@ public class Ingredient {
     private String name;
 
     @NotNull
-    private Integer amount;
+    private Double amount;
 
     private String unit;
 

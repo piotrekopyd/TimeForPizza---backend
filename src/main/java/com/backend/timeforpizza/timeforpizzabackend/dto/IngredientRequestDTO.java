@@ -9,7 +9,7 @@ public class IngredientRequestDTO {
 
     private String name;
 
-    private Integer amount;
+    private Double amount;
 
     private String unit;
 }

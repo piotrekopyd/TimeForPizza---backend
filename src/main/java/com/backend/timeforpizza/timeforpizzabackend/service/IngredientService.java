@@ -46,7 +46,7 @@ public class IngredientService {
         ingredientRepository.deleteAllByRecipeRecipeId(recipeId);
     }
 
-    public Ingredient updateIngredient(Long ingredientId, Ingredient newIngredient) {
+    public Ingredient updateIngredientById(Long ingredientId, Ingredient newIngredient) {
         Ingredient oldIngredient = ingredientRepository.findById(ingredientId)
                 .orElseThrow(() -> new ResourceNotFoundException("Ingredient", "ingredientId", ingredientId));
 

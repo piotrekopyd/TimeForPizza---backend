@@ -14,7 +14,7 @@ public class ModelMapperTests {
     private static final Long ID = 1L;
     private static final Recipe RECIPE = new Recipe(ID, "recipe", "preparation", "url", LocalDate.now());
     private static final Comment COMMENT = new Comment(ID, "Nelson Mandela", "Delicious!", LocalDate.now(), RECIPE);
-    private static final Ingredient INGREDIENT = new Ingredient(ID, "flour", 1, "kg", RECIPE);
+    private static final Ingredient INGREDIENT = new Ingredient(ID, "flour", 1D, "kg", RECIPE);
     private static final Curiosity CURIOSITY = new Curiosity(ID, "SATURDAY NIGHT IS PIZZA NIGHT.", "Saturday night is the most popular night of the week to eat pizza.", "Boguslaw Linda");
     private static final RecipeImage RECIPE_IMAGE = new RecipeImage(ID, "https://www.timeforpizza.com/recipe-collections/collection-image/2013/05/chorizo-mozarella.jpg", "pizza-chorizo.jpg", RECIPE);
 
@@ -40,7 +40,7 @@ public class ModelMapperTests {
     @Test
     void shouldMapToIngredient() {
         // given
-        IngredientRequestDTO ingredientRequest = new IngredientRequestDTO("name", 2, "kg");
+        IngredientRequestDTO ingredientRequest = new IngredientRequestDTO("name", 2D, "kg");
         Ingredient ingredient = new Ingredient(null, ingredientRequest.getName(), ingredientRequest.getAmount(), ingredientRequest.getUnit(), null);
 
         // then
@@ -59,7 +59,7 @@ public class ModelMapperTests {
     @Test
     void shouldMapToRecipe() {
         // given
-        RecipeRequestDTO recipeRequest = new RecipeRequestDTO("name", "preparation", List.of(new IngredientRequestDTO("ingredient", 1, "kg")), "url");
+        RecipeRequestDTO recipeRequest = new RecipeRequestDTO("name", "preparation", List.of(new IngredientRequestDTO("ingredient", 1D, "kg")), "url");
         Recipe recipe = new Recipe(null, recipeRequest.getName(), recipeRequest.getPreparation(), recipeRequest.getThumbnailUrl(), null);
 
         // then
