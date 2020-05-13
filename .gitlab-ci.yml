@@ -3,6 +3,9 @@ stages:
   - test
   - deploy
 
+variables:
+  MAVEN_CLI_OPTS: "-s .m2/settings.xml --batch-mode"
+
 maven_build_jar:
   image: maven:3.6.3-jdk-11
   stage: build
@@ -16,7 +19,7 @@ test:
   image: maven:3.6.3-jdk-11
   stage: test
   script:
-    - mvn -X test
+    - mvn $MAVEN_CLI_OPTS test
 
 heroku_deploy:
   image: docker:stable
