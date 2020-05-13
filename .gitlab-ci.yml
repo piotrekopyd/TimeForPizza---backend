@@ -2,11 +2,11 @@ stages:
   - build
   - test
 
-maven_build:
+maven_build_jar:
   image: maven:3.6.3-jdk-11
   stage: build
   script:
-    - mvn package -B
+    - mvn clean package -DskipTests
   artifacts:
     paths:
       - target/*.jar
@@ -16,3 +16,21 @@ test:
   stage: test
   script:
     - mvn -X test
+
+heroku_deploy:
+  image: docker:stable
+  stage: deploy
+  variables:
+    CONTAINER_IMAGE: registry.gitlab.com/$CI_PROJECT_PATH
+    DOCKER_HOST: tcp://docker:2375
+    DOCKER_DRIVER: overlay2
+  services:
+    - docker:dind
+  before_script:
+    - docker login --username=$HEROKU_USER --password=$HEROKU_API_KEY registry.heroku.com
+    - apk add --update curl && rm -rf /var/cache/apk/*
+  script:
+    - docker build --build-arg JAR_FILE=`ls build/libs/*.jar | head -1` --build-arg DATASOURCE_URL=$SPRING_DATASOURCE_URL --build-arg DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME --build-arg DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD  --tag registry.heroku.com/$HEROKU_APP_NAME/web .
+    - docker push registry.heroku.com/$HEROKU_APP_NAME/web
+    - ./release_app_in_heroku.sh $HEROKU_APP_NAME $HEROKU_API_KEY
+
