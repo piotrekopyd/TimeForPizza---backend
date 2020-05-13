@@ -7,7 +7,7 @@ cache:
   paths:
     - .m2/repository
 
-maven_build_jar:
+build:
   image: maven:3.6.3-jdk-11
   stage: build
   script:
