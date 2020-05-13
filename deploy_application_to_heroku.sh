@@ -41,4 +41,4 @@ HEROKU_APP_NAME=$(prop 'heroku.app.name')
 docker push registry.heroku.com/"$HEROKU_APP_NAME"/web
 
 # Release in heroku
-./release_app_in_heroku.sh "$HEROKU_APP_NAME" "$HEROKU_API_KEY"
+./release-app-in-heroku.sh "$HEROKU_APP_NAME" "$HEROKU_API_KEY"

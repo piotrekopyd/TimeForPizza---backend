@@ -37,5 +37,5 @@ heroku_deploy:
   script:
     - docker build --build-arg JAR_FILE=`ls build/libs/*.jar | head -1` --build-arg DATASOURCE_URL=$SPRING_DATASOURCE_URL --build-arg DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME --build-arg DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD  --tag registry.heroku.com/$HEROKU_APP_NAME/web .
     - docker push registry.heroku.com/$HEROKU_APP_NAME/web
-    - ./release_app_in_heroku.sh $HEROKU_APP_NAME $HEROKU_API_KEY
+    - ./release-app-in-heroku.sh $HEROKU_APP_NAME $HEROKU_API_KEY
 

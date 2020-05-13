@@ -6,7 +6,7 @@
 
 if [[ $# -ne 2 ]]
 then
-  echo 'Application name is expected as $1 parameter and API key as $2 parameter'
+  echo "Application name is expected as $1 parameter and API key as $2 parameter"
   exit
 fi
 
