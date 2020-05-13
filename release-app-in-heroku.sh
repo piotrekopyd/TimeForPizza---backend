@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 
 #Expected arguments
 # $1 = Heroku application name
