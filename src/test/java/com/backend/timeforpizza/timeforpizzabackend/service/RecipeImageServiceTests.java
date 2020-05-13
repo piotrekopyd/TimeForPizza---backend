@@ -14,6 +14,7 @@ import org.mockito.Mock;
 import org.springframework.mock.web.MockMultipartFile;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
+import java.awt.*;
 import java.io.IOException;
 import java.time.LocalDate;
 import java.util.List;
@@ -33,6 +34,9 @@ public class RecipeImageServiceTests {
 
     @InjectMocks
     private RecipeImageService recipeImageService;
+
+    // TODO: delete
+    private final static RecipeImage RECIPE_IMAGE = new RecipeImage(1L, "url", "name", null);
 
     @Test
     void shouldAddRecipeImage() {
