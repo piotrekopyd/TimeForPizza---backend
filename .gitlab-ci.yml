@@ -15,7 +15,7 @@ maven_build_jar:
   image: maven:3.6.3-jdk-11
   stage: build
   script:
-    - mvn clean package -DskipTests
+    - mvn $MAVEN_CLI_OPTS clean package -DskipTests
   artifacts:
     paths:
       - target/*.jar
@@ -24,7 +24,7 @@ test:
   image: maven:3.6.3-jdk-11
   stage: test
   script:
-    - mvn test
+    - mvn $MAVEN_CLI_OPTS test
 
 heroku_deploy:
   image: docker:stable
