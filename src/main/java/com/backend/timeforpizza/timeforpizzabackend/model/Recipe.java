@@ -23,6 +23,8 @@ public class Recipe {
     @Column(name = "thumbnail_url")
     private String thumbnailUrl;
 
+    // TODO: Add author
+
     private LocalDate date;
 
     public Recipe() {}

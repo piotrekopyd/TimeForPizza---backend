@@ -82,6 +82,16 @@ public class ModelMapperTests {
     }
 
     @Test
+    void shouldMapToRecipeMiniatureResponse() {
+        // given
+        RecipeMiniatureResponseDTO recipeMiniatureResponse = new RecipeMiniatureResponseDTO(RECIPE.getRecipeId(), RECIPE.getName(), RECIPE.getThumbnailUrl(), RECIPE.getDate().toString());
+        // when
+        var response = ModelMapper.mapToRecipeMiniature(RECIPE);
+        // then
+        assertEquals(recipeMiniatureResponse, response);
+    }
+
+    @Test
     void shouldMapToCuriosity() {
         // given
         CuriosityRequestDTO curiosityRequest = new CuriosityRequestDTO("title", "very interesting curiosity", "John Lennon");

@@ -58,9 +58,10 @@ public class RecipeService {
         return ModelMapper.mapToRecipeResponse(recipe, ingredients, comments, images);
     }
 
-    public List<RecipeListResponseDTO> getAllRecipes() {
-        // TODO
-        return List.of();
+    public List<RecipeMiniatureResponseDTO> getAllRecipesMiniature() {
+        return recipeRepository.findAll().stream()
+                .map(ModelMapper::mapToRecipeMiniature)
+                .collect(Collectors.toList());
     }
 
     @Transactional

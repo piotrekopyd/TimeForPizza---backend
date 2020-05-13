@@ -73,6 +73,10 @@ public class ModelMapper {
         return recipeResponseDTO;
     }
 
+    public static RecipeMiniatureResponseDTO mapToRecipeMiniature(@NotNull Recipe recipe) {
+        return new RecipeMiniatureResponseDTO(recipe.getRecipeId(), recipe.getName(), recipe.getThumbnailUrl(), recipe.getDate() != null ? recipe.getDate().toString() : null);
+    }
+
     public static Curiosity mapToCuriosity(CuriosityRequestDTO curiosityRequest) {
         return new Curiosity(null, curiosityRequest.getTitle(), curiosityRequest.getCuriosity(), curiosityRequest.getAuthor());
     }

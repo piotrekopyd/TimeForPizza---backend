@@ -5,7 +5,7 @@ import lombok.Data;
 
 @Data
 @AllArgsConstructor
-public class RecipeListResponseDTO {
+public class RecipeMiniatureResponseDTO {
 
     private Long recipeId;
 

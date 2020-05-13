@@ -44,6 +44,12 @@ public class RecipeController {
         return recipeService.getAllCommentsByRecipeId(recipeId);
     }
 
+    @GetMapping(path = "/list")
+    public List<RecipeMiniatureResponseDTO> getAllRecipeMiniatures() {
+        // TODO: Pagination
+        return recipeService.getAllRecipesMiniature();
+    }
+
     @PatchMapping(path = "{recipeId}")
     public RecipeResponseDTO updateRecipe(@RequestBody RecipeRequestDTO recipeRequestDTO, @PathVariable("recipeId") Long id) {
         return recipeService.updateRecipe(recipeRequestDTO, id);

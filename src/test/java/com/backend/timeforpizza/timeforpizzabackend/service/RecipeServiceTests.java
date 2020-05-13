@@ -92,6 +92,17 @@ public class RecipeServiceTests {
     }
 
     @Test
+    void shouldGetAllRecipeMiniatures() {
+        // given
+        RecipeMiniatureResponseDTO recipeMiniatureResponse = ModelMapper.mapToRecipeMiniature(HAWAIIAN_RECIPE);
+        when(recipeRepository.findAll()).thenReturn(List.of(HAWAIIAN_RECIPE));
+        // when
+        var response = recipeService.getAllRecipesMiniature();
+        // then
+        assertEquals(List.of(recipeMiniatureResponse), response);
+    }
+
+    @Test
     void shouldUpdateRecipe() {
         // given
         Recipe capreseRecipe = new Recipe(2L, "Caprese pizza", "easy prep", "url", LocalDate.now().minusDays(5));
