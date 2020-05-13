@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
-import javax.validation.constraints.NotBlank;
 import java.util.List;
 
 @RestController
@@ -22,7 +21,7 @@ public class RecipeController {
 
     @DeleteMapping(path = "{id}")
     public void deleteRecipe(@PathVariable("id") Long recipeId) {
-        recipeService.deleteRecipe(recipeId);
+        recipeService.deleteRecipeById(recipeId);
     }
 
     @DeleteMapping(path = "/images")

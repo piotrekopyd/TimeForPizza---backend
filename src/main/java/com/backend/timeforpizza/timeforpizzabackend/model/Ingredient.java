@@ -20,7 +20,6 @@ public class Ingredient {
     @NotNull
     private String name;
 
-    @NotNull
     private Double amount;
 
     private String unit;
@@ -29,4 +28,6 @@ public class Ingredient {
     @JoinColumn(name = "recipe_id", nullable = false)
     @JsonIgnore
     private Recipe recipe;
+
+    public Ingredient () {}
 }

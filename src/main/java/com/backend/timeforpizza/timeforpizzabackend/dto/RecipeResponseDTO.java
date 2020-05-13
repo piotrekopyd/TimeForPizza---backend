@@ -17,6 +17,8 @@ public class RecipeResponseDTO {
 
     private String date;
 
+    private String thumbnailUrl;
+
     private List<IngredientResponseDTO> ingredients;
 
     private List<CommentResponseDTO> comments;

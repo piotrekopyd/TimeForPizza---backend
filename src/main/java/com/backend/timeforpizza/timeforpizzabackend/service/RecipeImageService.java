@@ -1,11 +1,12 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
 import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
+import com.backend.timeforpizza.timeforpizzabackend.model.FileType;
 import com.backend.timeforpizza.timeforpizzabackend.model.RecipeImage;
 import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.DeleteImageRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeImageRepository;
-import com.backend.timeforpizza.timeforpizzabackend.repository.ImageStorageRepository;
+import com.backend.timeforpizza.timeforpizzabackend.repository.FileStorageRepository;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,11 +20,11 @@ public class RecipeImageService {
 
     private RecipeImageRepository recipeImageRepository;
 
-    private ImageStorageRepository imagesStorageService;
+    private FileStorageRepository imageStorageRepository;
 
-    RecipeImageService(RecipeImageRepository recipeImageRepository, @Qualifier("googleCloudStorage") ImageStorageRepository imagesStorageService) {
+    RecipeImageService(RecipeImageRepository recipeImageRepository, @Qualifier("googleCloudStorage") FileStorageRepository imageStorageRepository) {
         this.recipeImageRepository = recipeImageRepository;
-        this.imagesStorageService = imagesStorageService;
+        this.imageStorageRepository = imageStorageRepository;
     }
 
     public List<RecipeImage> getAllByRecipeId(Long recipeId) {
@@ -33,24 +34,23 @@ public class RecipeImageService {
     @Transactional
     public void uploadImages(MultipartFile[] multipartFiles, Recipe recipe) {
         for (MultipartFile file: multipartFiles) {
-            new Thread(() -> {
+//            new Thread(() -> {
                 try {
-                    String path = imagesStorageService.uploadFile(file, recipe.getRecipeId());
+                    String path = imageStorageRepository.uploadFile(file, FileType.RECIPE_IMAGE, recipe.getRecipeId().toString());
                     RecipeImage recipeImage = new RecipeImage(null, path, file.getOriginalFilename(), recipe);
-                    saveImagePathToDatabase(recipeImage);
+                    addRecipeImage(recipeImage);
                 } catch (IOException e) {
                     System.out.println(e.getMessage());
                 }
-            }).start();
+//            }).start();
         }
     }
 
-    public RecipeImage saveImagePathToDatabase(RecipeImage recipeImage) {
+    public RecipeImage addRecipeImage(RecipeImage recipeImage) {
         if (recipeImageRepository.existsByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())) {
             return recipeImageRepository.findByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())
                     .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImage", recipeImage.getUrl()));
         }
-
         return recipeImageRepository.save(recipeImage);
     }
 
@@ -59,26 +59,21 @@ public class RecipeImageService {
         for(DeleteImageRequestDTO request: deleteImageRequestDTOList) {
             RecipeImage image = recipeImageRepository.findById(request.getImageId())
                     .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImageId", request.getImageId()));
-            deleteImageById(request.getImageId());
-            imagesStorageService.deleteFile(image.getRecipe().getRecipeId(), request.getImageName());
+            recipeImageRepository.deleteById(request.getImageId());
+            imageStorageRepository.deleteFile(image.getRecipe().getRecipeId(), request.getImageName());
         }
     }
 
     @Transactional
     public void deleteAllImagesByRecipeId(Long recipeId) {
-        if (imagesStorageService.deleteAllFilesByRecipeId(recipeId)) {
-            // TODO: Delete all from gcs
+        if (imageStorageRepository.deleteAllFilesWithPrefix(FileType.RECIPE_IMAGE, recipeId.toString())) {
             recipeImageRepository.deleteAllByRecipeRecipeId(recipeId);
         } else {
             throw new RuntimeException("Failed to delete images from storage");
         }
     }
 
-    private void deleteImageById(Long imageId) {
+    void deleteImageById(Long imageId) {
         recipeImageRepository.deleteById(imageId);
-    }
-
-    public void uploadImage(MultipartFile multipartFile) {
-        System.out.println(multipartFile.getName());
     }
 }

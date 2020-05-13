@@ -4,6 +4,7 @@ package com.backend.timeforpizza.timeforpizzabackend.util;
 import com.backend.timeforpizza.timeforpizzabackend.model.*;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 
+import javax.validation.constraints.NotNull;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -49,11 +50,12 @@ public class ModelMapper {
         return recipe;
     }
 
-    public static RecipeResponseDTO mapToRecipeResponse(Recipe recipe, List<Ingredient> ingredients, List<Comment> comments, List<RecipeImage> images) {
+    public static RecipeResponseDTO mapToRecipeResponse(@NotNull Recipe recipe, List<Ingredient> ingredients, List<Comment> comments, List<RecipeImage> images) {
         RecipeResponseDTO recipeResponseDTO = new RecipeResponseDTO();
         recipeResponseDTO.setName(recipe.getName());
         recipeResponseDTO.setPreparation(recipe.getPreparation());
         recipeResponseDTO.setRecipeId(recipe.getRecipeId());
+        recipeResponseDTO.setThumbnailUrl(recipe.getThumbnailUrl());
         recipeResponseDTO.setDate(recipe.getDate() != null ? recipe.getDate().toString() : null);
 
         recipeResponseDTO.setComments(comments.stream()

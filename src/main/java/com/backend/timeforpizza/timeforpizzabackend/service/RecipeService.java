@@ -37,14 +37,14 @@ public class RecipeService {
     public RecipeResponseDTO addRecipe(RecipeRequestDTO recipeRequestDTO) {
         Recipe recipe = ModelMapper.mapToRecipe(recipeRequestDTO);
         recipe.setDate(LocalDate.now());
-        recipeRepository.save(recipe);
+        Recipe savedRecipe = recipeRepository.save(recipe);
 
         List<Ingredient> ingredients = ingredientService.addAllIngredients(recipeRequestDTO.getIngredients().stream()
                 .map(ModelMapper::mapToIngredient)
-                .peek(e -> e.setRecipe(recipe))
+                .peek(e -> e.setRecipe(savedRecipe))
                 .collect(Collectors.toList()));
 
-        return ModelMapper.mapToRecipeResponse(recipe, ingredients, List.of(), List.of());
+        return ModelMapper.mapToRecipeResponse(savedRecipe, ingredients, List.of(), List.of());
     }
 
     public RecipeResponseDTO getRecipeById(Long recipeId) {
@@ -70,6 +70,7 @@ public class RecipeService {
 
         oldRecipe.setName(recipeRequestDTO.getName());
         oldRecipe.setPreparation(recipeRequestDTO.getPreparation());
+        oldRecipe.setThumbnailUrl(recipeRequestDTO.getThumbnailUrl());
         oldRecipe.setDate(LocalDate.now());
         recipeRepository.save(oldRecipe);
 
@@ -93,7 +94,7 @@ public class RecipeService {
     }
 
     @Transactional
-    public void deleteRecipe(Long recipeId) {
+    public void deleteRecipeById(Long recipeId) {
         commentService.deleteAllCommentsByRecipeId(recipeId);
         ingredientService.deleteAllIngredientsByRecipeId(recipeId);
         recipeImageService.deleteAllImagesByRecipeId(recipeId);
@@ -128,7 +129,7 @@ public class RecipeService {
         return ModelMapper.mapToCommentResponse(commentService.addComment(comment));
     }
 
-    public void deleteComment(Long commentId) {
+    public void deleteCommentById(Long commentId) {
         commentService.deleteCommentById(commentId);
     }
 

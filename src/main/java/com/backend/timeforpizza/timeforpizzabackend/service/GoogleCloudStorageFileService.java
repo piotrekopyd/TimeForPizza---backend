@@ -1,6 +1,7 @@
 package com.backend.timeforpizza.timeforpizzabackend.service;
 
-import com.backend.timeforpizza.timeforpizzabackend.repository.ImageStorageRepository;
+import com.backend.timeforpizza.timeforpizzabackend.model.FileType;
+import com.backend.timeforpizza.timeforpizzabackend.repository.FileStorageRepository;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -11,10 +12,11 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.annotation.PostConstruct;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.util.UUID;
 
-@Service()
+@Service
 @Qualifier("googleCloudStorage")
-public class GoogleCloudStorageImageService implements ImageStorageRepository {
+public class GoogleCloudStorageFileService implements FileStorageRepository {
 
     @Value("${google.cloud.storage.project.id}")
     private String projectId;
@@ -30,8 +32,7 @@ public class GoogleCloudStorageImageService implements ImageStorageRepository {
 
     private Storage storage;
 
-    public GoogleCloudStorageImageService() {
-    }
+    public GoogleCloudStorageFileService() { }
 
     @PostConstruct
     void setupStorage() {
@@ -48,15 +49,15 @@ public class GoogleCloudStorageImageService implements ImageStorageRepository {
         }
     }
 
-    public String uploadFile(MultipartFile file, Long recipeId) throws IOException {
-        String fileName = file.getOriginalFilename() != null ? recipeId + "/" + file.getOriginalFilename().replaceAll(" ", "_") : "";
+    public String uploadFile(MultipartFile file, FileType fileType, String prefix) throws IOException {
+        String fileName = file.getOriginalFilename() != null
+                ? buildFilePrefix(fileType, prefix) + "/" + file.getOriginalFilename().replaceAll(" ", "_")
+                : UUID.randomUUID().toString();
+
         BlobId blobId = BlobId.of(this.bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
         Blob blob = storage.create(blobInfo, file.getBytes());
-        return buildImagePath(blob.getName());
-    }
-
-    public void deleteAllFilesWithPrefix(String prefix) {
+        return buildFilePath(blob.getName());
     }
 
     public void deleteFile(Long recipeId, String objectName) {
@@ -64,8 +65,9 @@ public class GoogleCloudStorageImageService implements ImageStorageRepository {
         storage.delete(bucketName, fileName);
     }
 
-    public Boolean deleteAllFilesByRecipeId(Long recipeId) {
-        Iterable<Blob> blobs = listOfObjectsWithPrefix(recipeId + "/");
+    public Boolean deleteAllFilesWithPrefix(FileType fileType, String prefix) {
+        prefix = buildFilePrefix(fileType, prefix);
+        Iterable<Blob> blobs = listOfObjectsWithPrefix(prefix.charAt(prefix.length() - 1) == '/' ? prefix : prefix + "/");
         boolean deleted = false;
 
         for(Blob blob: blobs) {
@@ -76,14 +78,26 @@ public class GoogleCloudStorageImageService implements ImageStorageRepository {
 
     public Iterable<Blob> listOfObjectsWithPrefix(String prefix) {
         Bucket bucket = storage.get(bucketName);
-
         return bucket.list(
                         Storage.BlobListOption.prefix(prefix),
                         Storage.BlobListOption.currentDirectory()
                 ).iterateAll();
     }
 
-    public String buildImagePath(String fileName) {
+    public String buildFilePath(String fileName) {
         return storageApiPath + bucketName + "/" + fileName;
+    }
+
+    public String buildFilePrefix(FileType fileType, String prefix) {
+        String path = "";
+        switch (fileType) {
+            case RECIPE_IMAGE:
+                path += "recipe_images";
+        }
+
+        if (prefix.replaceAll(" ", "").length() > 0) {
+            path += prefix.charAt(0) != '/' ? "/" + prefix : prefix;
+        }
+        return path;
     }
 }
