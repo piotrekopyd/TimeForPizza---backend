@@ -8,7 +8,7 @@ import org.springframework.test.context.ActiveProfiles;
 @ActiveProfiles("test")
 class TimeforpizzabackendApplicationTests {
 
-    // TODO: h2 db error
+    // TODO: Fix
 //    @Test
 //    void contextLoads() {
 //    }
