@@ -1,6 +1,7 @@
 stages:
   - build
   - test
+  - deploy
 
 maven_build_jar:
   image: maven:3.6.3-jdk-11
