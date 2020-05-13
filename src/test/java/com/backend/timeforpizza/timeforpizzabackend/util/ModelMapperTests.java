@@ -3,12 +3,15 @@ package com.backend.timeforpizza.timeforpizzabackend.util;
 import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 import com.backend.timeforpizza.timeforpizzabackend.model.*;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.time.LocalDate;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
+@ExtendWith(SpringExtension.class)
 public class ModelMapperTests {
 
     private static final Long ID = 1L;
