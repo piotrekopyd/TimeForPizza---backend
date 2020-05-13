@@ -1,7 +1,7 @@
 FROM openjdk:11-jre-slim
 VOLUME /tmp
 ARG JAR_FILE
-ENV DATASOURCE_URL="jdbc:mysql://localhost:3306/timeforpizza?useJDBCCompliantTimezoneShift=true&serverTimezone=UTC"
+ENV DATASOURCE_URL=url
 ENV DATASOURCE_USERNAME=root
 ENV DATASOURCE_PASSWORD=psswd
 COPY ${JAR_FILE} app.jar
