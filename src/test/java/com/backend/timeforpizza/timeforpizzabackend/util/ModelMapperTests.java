@@ -72,7 +72,7 @@ public class ModelMapperTests {
         CommentResponseDTO commentResponse = new CommentResponseDTO(COMMENT.getCommentId(), COMMENT.getNickname(), COMMENT.getComment(), COMMENT.getDate().toString());
         IngredientResponseDTO ingredientResponse = new IngredientResponseDTO(INGREDIENT.getIngredientId(), INGREDIENT.getName(), INGREDIENT.getAmount(), INGREDIENT.getUnit());
         RecipeImageResponseDTO recipeImageResponse = new RecipeImageResponseDTO(RECIPE_IMAGE.getRecipeImageId(), RECIPE_IMAGE.getUrl(), RECIPE_IMAGE.getImageName());
-        RecipeResponseDTO recipeResponse = new RecipeResponseDTO(ID, RECIPE.getName(), RECIPE.getPreparation(), RECIPE.getDate().toString(), List.of(ingredientResponse), List.of(commentResponse), List.of(recipeImageResponse));
+        RecipeResponseDTO recipeResponse = new RecipeResponseDTO(ID, RECIPE.getName(), RECIPE.getPreparation(), RECIPE.getDate().toString(), RECIPE.getThumbnailUrl(), List.of(ingredientResponse), List.of(commentResponse), List.of(recipeImageResponse));
 
         // when
         var givenResponse = ModelMapper.mapToRecipeResponse(RECIPE, List.of(INGREDIENT), List.of(COMMENT), List.of(RECIPE_IMAGE));
