@@ -4,6 +4,8 @@ import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityResponseDTO;
 import com.backend.timeforpizza.timeforpizzabackend.service.CuriosityService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -22,8 +24,8 @@ public class CuriosityController {
     }
 
     @PostMapping
-    public CuriosityResponseDTO addCuriosity(@Valid @NotNull @RequestBody CuriosityRequestDTO curiosity) {
-       return curiosityService.addCuriosity(curiosity);
+    public ResponseEntity<?> addCuriosity(@Valid @NotNull @RequestBody CuriosityRequestDTO curiosity) {
+        return new ResponseEntity<>(curiosityService.addCuriosity(curiosity), HttpStatus.CREATED);
     }
 
     @GetMapping
