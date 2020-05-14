@@ -35,7 +35,7 @@ heroku_deploy:
     - docker login --username=$HEROKU_USER --password=$HEROKU_API_KEY registry.heroku.com
     - apk add --update curl && rm -rf /var/cache/apk/*
   script:
-    - docker build --build-arg JAR_FILE=`ls target/*.jar | head -1` --env DATASOURCE_URL=$SPRING_DATASOURCE_URL --env DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME --env DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD  --tag registry.heroku.com/$HEROKU_APP_NAME/web .
+    - docker build --build-arg JAR_FILE=`ls target/*.jar | head -1` --build-arg DATASOURCE_URL=$SPRING_DATASOURCE_URL --build-arg DATASOURCE_USERNAME=$SPRING_DATASOURCE_USERNAME --build-arg DATASOURCE_PASSWORD=$SPRING_DATASOURCE_PASSWORD  --tag registry.heroku.com/$HEROKU_APP_NAME/web .
     - docker push registry.heroku.com/$HEROKU_APP_NAME/web
     - ./release-app-in-heroku.sh $HEROKU_APP_NAME $HEROKU_API_KEY
 
