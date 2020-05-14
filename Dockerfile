@@ -4,5 +4,8 @@ ARG JAR_FILE
 ARG DATASOURCE_URL
 ARG DATASOURCE_USERNAME
 ARG DATASOURCE_PASSWORD
+ENV SPRING_DATASOURCE_URL=$DATASOURCE_URL
+ENV SPRING_DATASOURCE_USERNAME=$DATASOURCE_USERNAME
+ENV SPRING_DATASOURCE_PASSWORD=$DATASOURCE_PASSWORD
 COPY ${JAR_FILE} app.jar
-CMD java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$PORT -Dspring.datasource.url=${DATASOURCE_URL} -Dspring.datasource.username=${DATASOURCE_USERNAME} -Dspring.datasource.password=${DATASOURCE_PASSWORD} -jar /app.jar
+CMD java -Djava.security.egd=file:/dev/./urandom -Dserver.port=$PORT -Dspring.datasource.url=${SPRING_DATASOURCE_URL} -Dspring.datasource.username=${SPRING_DATASOURCE_USERNAME} -Dspring.datasource.password=${SPRING_DATASOURCE_PASSWORD} -jar /app.jar
