@@ -44,7 +44,7 @@ public class RecipeController {
         return recipeService.getAllCommentsByRecipeId(recipeId);
     }
 
-    @GetMapping(path = "/list")
+    @GetMapping(path = "/miniatures")
     public List<RecipeMiniatureResponseDTO> getAllRecipeMiniatures() {
         // TODO: Pagination
         return recipeService.getAllRecipesMiniature();
