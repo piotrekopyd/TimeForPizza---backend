@@ -6,6 +6,8 @@ import com.backend.timeforpizza.timeforpizzabackend.dto.CuriosityResponseDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.CuriosityRepository;
 import com.backend.timeforpizza.timeforpizzabackend.model.Curiosity;
 import com.backend.timeforpizza.timeforpizzabackend.util.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,6 +19,8 @@ public class CuriosityService {
 
     private final CuriosityRepository curiosityRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(CuriosityService.class);
+
     @Autowired
     public CuriosityService(CuriosityRepository curiosityRepository) {
         this.curiosityRepository = curiosityRepository;
@@ -24,7 +28,9 @@ public class CuriosityService {
 
     public CuriosityResponseDTO addCuriosity(CuriosityRequestDTO curiosityRequestDTO) {
         Curiosity curiosity = ModelMapper.mapToCuriosity(curiosityRequestDTO);
-        return ModelMapper.mapToCuriosityResponse(curiosityRepository.save(curiosity));
+        curiosity = curiosityRepository.save(curiosity);
+        logger.info("Added curiosity with id: {}.", curiosity.getCuriosityId());
+        return ModelMapper.mapToCuriosityResponse(curiosity);
     }
 
     public List<CuriosityResponseDTO> getAllCuriosities() {
@@ -43,6 +49,7 @@ public class CuriosityService {
 
     public void deleteCuriosityById(Long id) {
         curiosityRepository.deleteById(id);
+        logger.info("Deleted curiosity with id: {}.", id);
     }
 
     public CuriosityResponseDTO updateCuriosity(Long id, CuriosityRequestDTO newCuriosity) {
@@ -51,7 +58,9 @@ public class CuriosityService {
 
         oldCuriosity.setTitle(newCuriosity.getTitle());
         oldCuriosity.setCuriosity(newCuriosity.getCuriosity());
-        return ModelMapper.mapToCuriosityResponse(curiosityRepository.save(oldCuriosity));
+        oldCuriosity = curiosityRepository.save(oldCuriosity);
+        logger.info("Updated curiosity with id: {}.", id);
+        return ModelMapper.mapToCuriosityResponse(oldCuriosity);
     }
 
 }

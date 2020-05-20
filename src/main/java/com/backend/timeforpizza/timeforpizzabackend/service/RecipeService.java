@@ -8,6 +8,8 @@ import com.backend.timeforpizza.timeforpizzabackend.dto.*;
 import com.backend.timeforpizza.timeforpizzabackend.model.RecipeImage;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeRepository;
 import com.backend.timeforpizza.timeforpizzabackend.util.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +26,8 @@ public class RecipeService {
     private final RecipeImageService recipeImageService;
     private final CommentService commentService;
 
+    private static final Logger logger = LoggerFactory.getLogger(RecipeService.class);
+
     @Autowired
     public RecipeService(RecipeRepository recipeRepository, IngredientService ingredientService, CommentService commentService
                          , RecipeImageService recipeImageService) {
@@ -38,11 +42,13 @@ public class RecipeService {
         Recipe recipe = ModelMapper.mapToRecipe(recipeRequestDTO);
         recipe.setDate(LocalDate.now());
         Recipe savedRecipe = recipeRepository.save(recipe);
+        logger.info("Added recipe with id: {}.", savedRecipe.getRecipeId());
 
         List<Ingredient> ingredients = ingredientService.addAllIngredients(recipeRequestDTO.getIngredients().stream()
                 .map(ModelMapper::mapToIngredient)
                 .peek(e -> e.setRecipe(savedRecipe))
                 .collect(Collectors.toList()));
+
 
         return ModelMapper.mapToRecipeResponse(savedRecipe, ingredients, List.of(), List.of());
     }
@@ -82,6 +88,7 @@ public class RecipeService {
 
         List<Comment> comments = commentService.getAllCommentsByRecipeId(recipeId);
         List<RecipeImage> images = recipeImageService.getAllByRecipeId(recipeId);
+        logger.info("Updated recipe with id: {}.", oldRecipe.getRecipeId());
         return ModelMapper.mapToRecipeResponse(oldRecipe, ingredients, comments, images);
     }
 
@@ -100,6 +107,7 @@ public class RecipeService {
         ingredientService.deleteAllIngredientsByRecipeId(recipeId);
         recipeImageService.deleteAllImagesByRecipeId(recipeId);
         recipeRepository.deleteById(recipeId);
+        logger.info("Deleted recipe with id: {}.", recipeId);
     }
 
     /** Ingredients */

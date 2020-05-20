@@ -9,6 +9,6 @@ import java.io.IOException;
 @Repository
 public interface FileStorageRepository {
     String uploadFile(MultipartFile file, FileType fileType, String prefix) throws IOException;
-    void deleteFile(Long recipeId, String objectName);
+    void deleteFile(FileType fileType, String prefix, String objectName);
     Boolean deleteAllFilesWithPrefix(FileType fileType, String prefix);
 }

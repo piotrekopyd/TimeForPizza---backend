@@ -4,6 +4,8 @@ import com.backend.timeforpizza.timeforpizzabackend.model.FileType;
 import com.backend.timeforpizza.timeforpizzabackend.repository.FileStorageRepository;
 import com.google.auth.oauth2.GoogleCredentials;
 import com.google.cloud.storage.*;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -32,10 +34,13 @@ public class GoogleCloudStorageFileService implements FileStorageRepository {
 
     private Storage storage;
 
+    private static final Logger logger = LoggerFactory.getLogger(GoogleCloudStorageFileService.class);
+
     public GoogleCloudStorageFileService() { }
 
     @PostConstruct
     void setupStorage() {
+        // TODO: get rid of hardcoded init
         try {
             StorageOptions storageOptions = StorageOptions.newBuilder()
                     .setProjectId(projectId)
@@ -57,12 +62,14 @@ public class GoogleCloudStorageFileService implements FileStorageRepository {
         BlobId blobId = BlobId.of(this.bucketName, fileName);
         BlobInfo blobInfo = BlobInfo.newBuilder(blobId).setContentType(file.getContentType()).build();
         Blob blob = storage.create(blobInfo, file.getBytes());
+        logger.info("Uploaded file with name: {} to {} bucket.", blob.getName(), bucketName);
         return buildFilePath(blob.getName());
     }
 
-    public void deleteFile(Long recipeId, String objectName) {
-        String fileName = recipeId + "/" + objectName;
+    public void deleteFile(FileType fileType, String prefix, String objectName) {
+        String fileName = buildFilePrefix(fileType, prefix) + "/" + objectName;
         storage.delete(bucketName, fileName);
+        logger.info("Deleted file with name: {}, from {} bucket..", fileName, bucketName);
     }
 
     public Boolean deleteAllFilesWithPrefix(FileType fileType, String prefix) {
@@ -73,6 +80,7 @@ public class GoogleCloudStorageFileService implements FileStorageRepository {
         for(Blob blob: blobs) {
             deleted = blob.delete();
         }
+        logger.info("Deleted all files with prefix: {}.", prefix);
         return deleted;
     }
 

@@ -7,6 +7,8 @@ import com.backend.timeforpizza.timeforpizzabackend.model.Recipe;
 import com.backend.timeforpizza.timeforpizzabackend.dto.DeleteImageRequestDTO;
 import com.backend.timeforpizza.timeforpizzabackend.repository.RecipeImageRepository;
 import com.backend.timeforpizza.timeforpizzabackend.repository.FileStorageRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -21,6 +23,8 @@ public class RecipeImageService {
     private RecipeImageRepository recipeImageRepository;
 
     private FileStorageRepository imageStorageRepository;
+
+    private static final Logger logger = LoggerFactory.getLogger(RecipeImageService.class);
 
     RecipeImageService(RecipeImageRepository recipeImageRepository, @Qualifier("googleCloudStorage") FileStorageRepository imageStorageRepository) {
         this.recipeImageRepository = recipeImageRepository;
@@ -48,10 +52,13 @@ public class RecipeImageService {
 
     public RecipeImage addRecipeImage(RecipeImage recipeImage) {
         if (recipeImageRepository.existsByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())) {
+            String url = recipeImage.getUrl();
             return recipeImageRepository.findByUrlAndRecipeRecipeId(recipeImage.getUrl(), recipeImage.getRecipe().getRecipeId())
-                    .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImage", recipeImage.getUrl()));
+                    .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImage", url));
         }
-        return recipeImageRepository.save(recipeImage);
+        recipeImage = recipeImageRepository.save(recipeImage);
+        logger.info("Added image with id: {}, for recipe with id: {}.", recipeImage.getRecipeImageId(), recipeImage.getRecipe().getRecipeId());
+        return recipeImage;
     }
 
     @Transactional
@@ -60,7 +67,8 @@ public class RecipeImageService {
             RecipeImage image = recipeImageRepository.findById(request.getImageId())
                     .orElseThrow(() -> new ResourceNotFoundException("RecipeImage", "recipeImageId", request.getImageId()));
             recipeImageRepository.deleteById(request.getImageId());
-            imageStorageRepository.deleteFile(image.getRecipe().getRecipeId(), request.getImageName());
+            imageStorageRepository.deleteFile(FileType.RECIPE_IMAGE, image.getRecipe().getRecipeId().toString(), request.getImageName());
+            logger.info("Deleted image with name: {}.", request.getImageName());
         }
     }
 
@@ -68,7 +76,9 @@ public class RecipeImageService {
     public void deleteAllImagesByRecipeId(Long recipeId) {
         if (imageStorageRepository.deleteAllFilesWithPrefix(FileType.RECIPE_IMAGE, recipeId.toString())) {
             recipeImageRepository.deleteAllByRecipeRecipeId(recipeId);
+            logger.info("Deleted all images for recipe with id: {}.", recipeId);
         } else {
+            logger.error("Failed to delete images from storage for recipe with id: {}.", recipeId);
             throw new RuntimeException("Failed to delete images from storage");
         }
     }

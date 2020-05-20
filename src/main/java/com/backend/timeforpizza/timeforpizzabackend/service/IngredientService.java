@@ -3,6 +3,8 @@ package com.backend.timeforpizza.timeforpizzabackend.service;
 import com.backend.timeforpizza.timeforpizzabackend.exception.ResourceNotFoundException;
 import com.backend.timeforpizza.timeforpizzabackend.model.Ingredient;
 import com.backend.timeforpizza.timeforpizzabackend.repository.IngredientRepository;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,6 +15,8 @@ public class IngredientService {
 
     private final IngredientRepository ingredientRepository;
 
+    private static final Logger logger = LoggerFactory.getLogger(IngredientService.class);
+
     @Autowired
     public IngredientService(IngredientRepository ingredientRepository) {
         this.ingredientRepository = ingredientRepository;
@@ -22,7 +26,9 @@ public class IngredientService {
         if (ingredient.getRecipe() == null) {
             // TODO
         }
-        return ingredientRepository.save(ingredient);
+        ingredient = ingredientRepository.save(ingredient);
+        logger.info("Added ingredient with id: {}.", ingredient.getIngredientId());
+        return ingredient;
     }
 
     public List<Ingredient> addAllIngredients(List<Ingredient> ingredients) {
@@ -40,10 +46,12 @@ public class IngredientService {
 
     public void deleteIngredientById(Long ingredientId) {
         ingredientRepository.deleteById(ingredientId);
+        logger.info("Deleted ingredient with id: {}.", ingredientId);
     }
 
     public void deleteAllIngredientsByRecipeId(Long recipeId) {
         ingredientRepository.deleteAllByRecipeRecipeId(recipeId);
+        logger.info("Deleted all ingredients for recipe with id: {}.", recipeId);
     }
 
     public Ingredient updateIngredientById(Long ingredientId, Ingredient newIngredient) {
@@ -53,13 +61,16 @@ public class IngredientService {
         oldIngredient.setAmount(newIngredient.getAmount());
         oldIngredient.setName(newIngredient.getName());
         oldIngredient.setUnit(newIngredient.getUnit());
+        oldIngredient = ingredientRepository.save(oldIngredient);
+        logger.info("Updated ingredient with id: {}.", ingredientId);
         return ingredientRepository.save(oldIngredient);
     }
 
     public List<Ingredient> updateAllIngredientsByRecipeId(Long recipeId, List<Ingredient> ingredients) {
         ingredientRepository.deleteAllByRecipeRecipeId(recipeId);
-
-        return ingredientRepository.saveAll(ingredients);
+        ingredients = ingredientRepository.saveAll(ingredients);
+        logger.info("Updated ingredients for recipe with id: {}.", recipeId);
+        return ingredients;
     }
 
 }

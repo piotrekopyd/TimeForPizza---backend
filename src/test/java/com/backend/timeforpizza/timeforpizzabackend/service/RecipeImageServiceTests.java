@@ -97,7 +97,7 @@ public class RecipeImageServiceTests {
         when(recipeImageRepository.findById(1L)).thenReturn(Optional.of(capreseRecipeImage));
         when(recipeImageRepository.findById(2L)).thenReturn(Optional.of(hawaiianRecipeImage));
         doNothing().when(recipeImageRepository).deleteById(anyLong());
-        doNothing().when(imageStorageRepository).deleteFile(anyLong(), anyString());
+        doNothing().when(imageStorageRepository).deleteFile(any(FileType.class), anyString(), anyString());
 
         // when
         recipeImageService.deleteImages(List.of(capreseDeleteImageRequest, hawaiianDeleteImageRequest));
@@ -105,8 +105,8 @@ public class RecipeImageServiceTests {
         // then
         verify(recipeImageRepository).deleteById(1L);
         verify(recipeImageRepository).deleteById(2L);
-        verify(imageStorageRepository).deleteFile(1L, capreseDeleteImageRequest.getImageName());
-        verify(imageStorageRepository).deleteFile(2L, hawaiianDeleteImageRequest.getImageName());
+        verify(imageStorageRepository).deleteFile(FileType.RECIPE_IMAGE,"1", capreseDeleteImageRequest.getImageName());
+        verify(imageStorageRepository).deleteFile(FileType.RECIPE_IMAGE, "2", hawaiianDeleteImageRequest.getImageName());
     }
 
     @Test
